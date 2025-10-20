@@ -1,0 +1,21 @@
+:root {
+  --color-primary: #FFFFFF;
+  --color-secondary: #EEEEEE;
+  --color-accent: #FFD166;
+  --color-text: #000000;
+  --color-caption: #787878;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  color: var(--color-text);
+  background: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.h1 { font-size: 24px; line-height: 28px; font-weight: 700; }
+.body { font-size: 14px; line-height: 16px; font-weight: 400; }
+.caption { font-size: 10px; line-height: 12px; font-weight: 400; color: var(--color-caption); }
