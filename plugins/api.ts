@@ -52,7 +52,9 @@ function makeUser(i: number): User {
   const phone = `+79*****${pad2(Math.floor(phoneTail / 100))}${String(phoneTail).slice(-2)}`
 
   return {
-    id: (64_000_000_000_000_000 + i).toString(16),
+    id: `u${i.toString(16).padStart(5, '0')}${Math.floor(seeded(i) * 0xffff)
+    .toString(16)
+    .padStart(4, '0')}`,
     balance: Math.floor(r * 1000),
     cashbackPercent: 10,
     city,
