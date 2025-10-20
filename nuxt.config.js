@@ -21,7 +21,7 @@ export default {
   css: ['@/assets/scss/main.scss'],
 
   // Plugins
-  plugins: [],
+  plugins: ['~/plugins/api.ts'],
 
   // Auto import components
   components: true,
