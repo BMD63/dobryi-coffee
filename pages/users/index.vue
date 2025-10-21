@@ -74,11 +74,12 @@ import UserItem from '~/components/UserItem.vue'
 import { defineComponent } from 'vue'
 import UsersToolbar from '~/components/UsersToolbar.vue'
 import type { User } from '~/plugins/api'
-
-const TOTAL = 8000
-const FIRST_LIMIT = 100
-const MAX_LIMIT = 500
-const PAGE_SIZE = 50
+import {
+  USERS_TOTAL,
+  USERS_FIRST_LIMIT,
+  USERS_MAX_LIMIT,
+  PAGE_SIZE
+} from '~/constants/users'
 
 export default defineComponent({
   name: 'UsersPage',
@@ -97,15 +98,15 @@ export default defineComponent({
   async fetch () {
     // 1) Первая пачка на 100
     {
-      const { items } = await (this as any).$api.users.list({ offset: 0, limit: FIRST_LIMIT })
+      const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
       this.users.push(...items)
       this.loaded = this.users.length
     }
     // 2) Остальное по 500 (последняя пачка — остаток)
     let offset = this.loaded
-    while (offset < TOTAL) {
-      const remaining = TOTAL - offset
-      const limit = Math.min(MAX_LIMIT, remaining)
+    while (offset < USERS_TOTAL) {
+      const remaining = USERS_TOTAL - offset
+      const limit = Math.min(USERS_MAX_LIMIT, remaining)
       const { items } = await (this as any).$api.users.list({ offset, limit })
       this.users.push(...items)
       offset += items.length
@@ -116,7 +117,7 @@ export default defineComponent({
   },
   computed: {
     totalAll (): number {
-      return TOTAL
+      return USERS_TOTAL
     },
     filteredUsers (): User[] {
       const q = this.search.trim().toLowerCase()
