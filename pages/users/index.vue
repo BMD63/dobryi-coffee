@@ -70,9 +70,9 @@
 </template>
 
 <script lang="ts">
-import UserItem from '~/components/UserItem.vue'
 import { defineComponent } from 'vue'
 import UsersToolbar from '~/components/UsersToolbar.vue'
+import UserItem from '~/components/UserItem.vue'
 import type { User } from '~/plugins/api'
 import {
   USERS_TOTAL,
@@ -86,7 +86,7 @@ export default defineComponent({
   components: { UsersToolbar, UserItem },
   data () {
     return {
-      users: [] as User[],
+      users: [] as User[],                     // локальная копия для рендера
       loaded: 0,
       search: '',
       selectedCities: [] as string[],
@@ -96,13 +96,26 @@ export default defineComponent({
   },
   fetchOnServer: false,
   async fetch () {
-    // 1) Первая пачка на 100
+    // 0) Если уже кэшировано — используем кэш и выходим
+    const cached = (this.$store.state as any).users
+    if (cached && cached.list && cached.list.length) {
+      this.users = cached.list
+      this.loaded = cached.loaded
+      this.cityList = cached.cities && cached.cities.length ? cached.cities : (this as any).$api.getCityList()
+      if (!cached.cities || !cached.cities.length) {
+        this.$store.commit('users/setCities', this.cityList)
+      }
+      return
+    }
+
+    // 1) Первая пачка
     {
       const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
       this.users.push(...items)
       this.loaded = this.users.length
     }
-    // 2) Остальное по 500 (последняя пачка — остаток)
+
+    // 2) Остальные пачки
     let offset = this.loaded
     while (offset < USERS_TOTAL) {
       const remaining = USERS_TOTAL - offset
@@ -112,23 +125,20 @@ export default defineComponent({
       offset += items.length
       this.loaded = this.users.length
     }
-    // Справочник городов
+
+    // 3) Города + записать всё в кэш
     this.cityList = (this as any).$api.getCityList()
+    this.$store.commit('users/setUsers', this.users)
+    this.$store.commit('users/setCities', this.cityList)
   },
   computed: {
-    totalAll (): number {
-      return USERS_TOTAL
-    },
+    totalAll (): number { return USERS_TOTAL },
     filteredUsers (): User[] {
       const q = this.search.trim().toLowerCase()
       const selected = new Set(this.selectedCities)
       const norm = (s: string) => s.replace(/[\s-]/g, '')
-
       return this.users.filter(u => {
-        const byQuery =
-          !q ||
-          u.name.toLowerCase().includes(q) ||
-          norm(u.phone).includes(norm(q))
+        const byQuery = !q || u.name.toLowerCase().includes(q) || norm(u.phone).includes(norm(q))
         const byCity = !selected.size || selected.has(u.city.id)
         return byQuery && byCity
       })
@@ -142,16 +152,12 @@ export default defineComponent({
     }
   },
   watch: {
-    // при изменении фильтров/поиска сбрасываемся на 1 страницу
     search () { this.page = 1 },
     selectedCities () { this.page = 1 }
   },
   methods: {
-    formatDate (ts: number) { return new Date(ts).toLocaleDateString() },
-    onCityClick (cityId: string) {
-      // при клике по городу сузим фильтр до одного города и вернёмся на 1 страницу
-      this.selectedCities = [cityId]
-      this.page = 1
+    formatDate (ts: number) {
+      return new Date(ts).toLocaleDateString()
     }
   }
 })
