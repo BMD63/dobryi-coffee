@@ -1,34 +1,176 @@
 <template>
-  <div>
-    <v-btn text class="mb-4" @click="$router.back()">
-      <v-icon left>mdi-arrow-left</v-icon> Назад
-    </v-btn>
+  <client-only>
+    <div class="user-details">
+      <v-btn text small class="mb-3" @click="$router.back()">
+        <v-icon left small>mdi-arrow-left</v-icon> Назад
+      </v-btn>
 
-    <v-skeleton-loader v-if="$fetchState.pending" type="article" />
+      <v-card v-if="$fetchState.pending" class="pa-4">
+        <v-skeleton-loader type="list-item-avatar, list-item-two-line, divider, list-item-three-line" />
+      </v-card>
 
-    <div v-else>
-      <div class="h1 mb-2">Пользователь: {{ user?.name }}</div>
-      <div class="body mb-4 caption">ID: {{ user?.id }}</div>
+      <v-card v-else-if="user" class="pa-4">
+        <div class="d-flex align-center mb-2">
+          <div class="h1 mr-3">{{ user.name }}</div>
+          <v-chip v-if="user.isBlocked" small color="error" text-color="white">Заблокирован</v-chip>
+        </div>
 
-      <v-simple-table dense class="mb-6">
-        <tbody>
-          <tr><td>Телефон</td><td>{{ user?.phone }}</td></tr>
-          <tr><td>Город</td><td>{{ user?.city.title }}</td></tr>
-          <tr><td>Баланс</td><td>{{ user?.balance }} ₽</td></tr>
-          <tr><td>Накоплено</td><td>{{ user?.saveTotal }} ₽</td></tr>
-          <tr><td>Потрачено</td><td>{{ user?.spendTotal }} ₽</td></tr>
-          <tr><td>Последний визит</td><td>{{ formatDate(user?.lastVisit) }}</td></tr>
-          <tr><td>Создан</td><td>{{ formatDate(user?.createdAt) }}</td></tr>
-          <tr><td>Обновлён</td><td>{{ formatDate(user?.updatedAt) }}</td></tr>
-          <tr><td>Статус</td><td>{{ user?.isBlocked ? 'Заблокирован' : 'Активен' }}</td></tr>
-        </tbody>
-      </v-simple-table>
+        <v-row dense>
+          <!-- ОСНОВНОЕ -->
+          <v-col cols="12" md="6">
+            <v-list two-line dense class="flat-list">
+              <v-subheader>Основное</v-subheader>
 
-      <v-alert type="info" outlined>
-        Здесь могла быть расширенная аналитика по клиенту.
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>ID</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.id }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <!-- Имя в заголовке, здесь не дублируем -->
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Телефон</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.phone }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Роль</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.role }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Заблокирован</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.isBlocked ? 'Да' : 'Нет' }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Город (title)</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.city.title }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Город (id)</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.city.id }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+
+          <!-- ФИНАНСЫ -->
+          <v-col cols="12" md="6">
+            <v-list two-line dense class="flat-list">
+              <v-subheader>Финансы</v-subheader>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Баланс</v-list-item-title>
+                  <v-list-item-subtitle>{{ money(user.balance) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Кэшбэк, %</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.cashbackPercent }}%</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Накоплено (saveTotal)</v-list-item-title>
+                  <v-list-item-subtitle>{{ money(user.saveTotal) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Кол-во начислений (saveCount)</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.saveCount }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Потрачено (spendTotal)</v-list-item-title>
+                  <v-list-item-subtitle>{{ money(user.spendTotal) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Кол-во трат (spendCount)</v-list-item-title>
+                  <v-list-item-subtitle>{{ user.spendCount }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+
+          <!-- ДАТЫ -->
+          <v-col cols="12" md="6">
+            <v-list two-line dense class="flat-list">
+              <v-subheader>Даты</v-subheader>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Последний визит</v-list-item-title>
+                  <v-list-item-subtitle>{{ dt(user.lastVisit) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Последнее начисление</v-list-item-title>
+                  <v-list-item-subtitle>{{ dt(user.lastSave) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Последний расход</v-list-item-title>
+                  <v-list-item-subtitle>{{ dt(user.lastSpend) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-list two-line dense class="flat-list">
+              <v-subheader>Служебные</v-subheader>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Создан (createdAt)</v-list-item-title>
+                  <v-list-item-subtitle>{{ dt(user.createdAt) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Обновлён (updatedAt)</v-list-item-title>
+                  <v-list-item-subtitle>{{ dt(user.updatedAt) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <v-alert v-else type="error" outlined>
+        Пользователь не найден.
       </v-alert>
     </div>
-  </div>
+  </client-only>
 </template>
 
 <script lang="ts">
@@ -39,38 +181,40 @@ import { USERS_TOTAL, USERS_FIRST_LIMIT, USERS_MAX_LIMIT } from '~/constants/use
 export default defineComponent({
   name: 'UserDetailsPage',
   data () {
-    return {
-      user: null as User | null
-    }
+    return { user: null as User | null }
   },
   fetchOnServer: false,
   async fetch () {
     const id = this.$route.params.id as string
 
-    let offset = 0
-    let found: User | null = null
-
-    // сначала первая сотня
-    {
-      const { items } = await (this as any).$api.users.list({ offset, limit: USERS_FIRST_LIMIT })
-      found = items.find((u: User) => u.id === id) || null
-      offset += items.length
+    const storeUsers = (this.$store.state as any).users
+    if (storeUsers && storeUsers.list && storeUsers.list.length) {
+      const cached = (storeUsers.list as User[]).find(u => u.id === id) || null
+      if (cached) { this.user = cached; return }
     }
 
-    while (!found && offset < USERS_TOTAL) {
+    {
+      const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
+      const found = (items as User[]).find(u => u.id === id) || null
+      if (found) { this.user = found; return }
+    }
+    let offset = USERS_FIRST_LIMIT
+    while (!this.user && offset < USERS_TOTAL) {
       const limit = Math.min(USERS_MAX_LIMIT, USERS_TOTAL - offset)
       const { items } = await (this as any).$api.users.list({ offset, limit })
-      found = items.find((u: User) => u.id === id) || null
-      offset += items.length
+      const found = (items as User[]).find((u: User) => u.id === id) || null
+      if (found) { this.user = found; break }
+      offset += (items as User[]).length
     }
-
-    this.user = found
   },
   methods: {
-    formatDate (ts?: number) {
-      if (!ts) return ''
-      return new Date(ts).toLocaleDateString()
-    }
+    dt (ts: number) { return ts ? new Date(ts).toLocaleDateString() : '—' },
+    money (n: number) { return `${n} ₽` }
   }
 })
 </script>
+
+<style scoped>
+.user-details .v-card { border-radius: 12px; }
+.flat-list { background: transparent !important; }
+</style>
