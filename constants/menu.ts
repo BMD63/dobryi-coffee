@@ -1,4 +1,8 @@
-export type MenuItem = { title: string; to: string; icon: string }
+export type MenuItem = {
+  title: string;
+  to: string;
+  icon: string;
+  startsWith?: boolean }
 
 export const MENU_ITEMS: MenuItem[] = [
   { title: 'Торговые точки',        to: '/shops',         icon: 'mdi-store' },
@@ -8,5 +12,5 @@ export const MENU_ITEMS: MenuItem[] = [
   { title: 'Напитки',               to: '/drinks',        icon: 'mdi-coffee' },
   { title: 'Абонементы',            to: '/passes',        icon: 'mdi-card-bulleted' },
   { title: 'Активные абонементы',   to: '/passes/active', icon: 'mdi-card-bulleted-outline' },
-  { title: 'Пользователи',          to: '/users',         icon: 'mdi-account-group' }
+  { title: 'Пользователи',          to: '/users',         icon: 'mdi-account-group', startsWith: true }
 ]

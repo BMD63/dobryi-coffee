@@ -72,9 +72,15 @@ export default {
     items () { return MENU_ITEMS }
   },
   methods: {
-    toggle () { this.mini = !this.mini },
-    isActive (it) { return this.$route.path.startsWith(it.to) }
-  }
+  isActive (it) {
+    const path = this.$route.path
+    if (it.startsWith) {
+      return path === it.to || path.startsWith(it.to + '/')
+    }
+    return path === it.to
+  },
+  toggle () { this.mini = !this.mini }
+}
 }
 </script>
 
