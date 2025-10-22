@@ -5,12 +5,8 @@
     <v-app-bar app dense flat clipped-left class="app-bar">
       <v-toolbar-title class="font-weight-bold">Добрый кофе</v-toolbar-title>
       <v-spacer />
-      <v-btn icon @click="toggleTheme" :title="dark ? 'Светлая тема' : 'Тёмная тема'">
-        <v-icon v-if="dark">mdi-weather-sunny</v-icon>
-        <v-icon v-else>mdi-weather-night</v-icon>
-      </v-btn>
+      <theme-toggle />
     </v-app-bar>
-
     <v-main class="app-main">
       <v-container class="app-container" fluid>
         <Nuxt />
@@ -21,6 +17,7 @@
 
 <script>
 import AppSidebar from '~/components/AppSidebar.vue'
+import ThemeToggle from '~/components/ThemeToggle.vue'
 
 export default {
   name: 'DefaultLayout',
