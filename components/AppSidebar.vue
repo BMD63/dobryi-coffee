@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- DESKTOP -->
     <v-navigation-drawer
       v-if="!isMobile"
       v-model="drawer"
@@ -26,7 +27,8 @@
 
       <v-divider />
 
-      <v-list nav dense class="py-2">
+      <!-- добавлен sidebar-list -->
+      <v-list nav dense class="py-2 sidebar-list">
         <v-list-item
           v-for="it in items"
           :key="it.to"
@@ -44,6 +46,7 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- MOBILE RAIL -->
     <v-navigation-drawer
       v-else
       app
@@ -65,7 +68,8 @@
 
       <v-divider />
 
-      <v-list nav dense class="py-2">
+      <!-- добавлен sidebar-list -->
+      <v-list nav dense class="py-2 sidebar-list">
         <v-list-item
           v-for="it in items"
           :key="it.to"
@@ -81,6 +85,7 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- MOBILE OVERLAY -->
     <v-navigation-drawer
       v-if="isMobile"
       v-model="mobileOpen"
@@ -102,7 +107,8 @@
 
       <v-divider />
 
-      <v-list nav dense class="py-2">
+      <!-- добавлен sidebar-list -->
+      <v-list nav dense class="py-2 sidebar-list">
         <v-list-item
           v-for="it in items"
           :key="it.to"
@@ -130,8 +136,8 @@ export default {
   name: 'AppSidebar',
   data () {
     return {
-      drawer: true,   // desktop открыт
-      mini: true      // desktop mini
+      drawer: true,
+      mini: false
     }
   },
   computed: {
@@ -150,7 +156,16 @@ export default {
       }
     }
   },
+  mounted () {
+    if (process.client) {
+      const saved = localStorage.getItem('sidebar-mini')
+      if (saved !== null) this.mini = saved === '1'
+    }
+  },
   watch: {
+    mini (v) {
+      if (process.client) localStorage.setItem('sidebar-mini', v ? '1' : '0')
+    },
     mobileOpen (v) {
       if (process.client) document.documentElement.style.overflow = v ? 'hidden' : ''
     }
@@ -168,7 +183,6 @@ export default {
 .app-sidebar.theme--light { background: #ffffff; border-right: 1px solid rgba(0,0,0,.08); }
 .app-sidebar.theme--dark  { background: #1A1A1A; border-right: 1px solid rgba(255,255,255,.06); }
 
-/* scrim overlay */
 :deep(.v-navigation-drawer__scrim) { background-color: rgba(0,0,0,.5) !important; }
 
 /* header */
@@ -185,22 +199,44 @@ export default {
 
 .user-block { margin-left:12px; min-width:0; flex:1 1 auto; }
 .user-name { font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.user-sub  { font-size:12px; opacity:.7; }
 .toggle-btn { margin-left:auto; }
 
-/* пункты меню */
-.nav-item { margin:6px 8px; border-radius:12px; height:44px; padding:0 12px; }
-.nav-item .v-icon { font-size:22px; }
+.sidebar-list { padding: 8px 8px !important; }
+
+.nav-item {
+  height: 44px;
+  padding: 0 12px;
+  margin: 4px 0;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.sidebar-list .nav-item.is-active {
+  margin-left: -8px;
+  margin-right: -8px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.nav-item .v-icon { font-size: 22px; }
+
+.nav-item :deep(.v-list-item__icon) { margin-right: 16px !important; }
 
 /* hover */
-.theme--light .nav-item:not(.is-active):hover { background:rgba(0,0,0,.06); }
-.theme--dark  .nav-item:not(.is-active):hover { background:rgba(255,255,255,.08); }
+.theme--light .nav-item:not(.is-active):hover { background: rgba(0,0,0,.06); }
+.theme--dark  .nav-item:not(.is-active):hover { background: rgba(255,255,255,.08); }
 
-/* активный пункт */
-.theme--dark  .is-active { background:#3A3A3A !important; color:#fff !important; }
-.theme--light .is-active { background:#EAEAEA !important; color:#000 !important; }
+.sidebar-list .nav-item.is-active {
+  margin-left: -8px;
+  margin-right: -8px;
+  border-radius: 6px;
+}
+
+.theme--dark  .nav-item.is-active { background:#5A5A5A !important; color:#fff !important; }
+.theme--light .nav-item.is-active { background:#E0E0E0 !important; color:#000 !important; }
 
 /* слои */
 .app-sidebar--rail { z-index: 201; }
 .app-sidebar--overlay { z-index: 202; }
 </style>
+
