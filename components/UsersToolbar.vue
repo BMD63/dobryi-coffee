@@ -147,9 +147,8 @@ export default {
 </script>
 
 <style scoped>
-/* фикс одинаковой высоты под чипы, чтобы макет не "прыгал" */
 .chips-row {
-  min-height: 28px;          /* высота под ряд маленьких чипов */
+  min-height: 28px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -168,6 +167,8 @@ export default {
   padding: 8px 12px;
 }
 
-/* читаемая акцентная кнопка */
 .btn-done { background-color: #FFD166 !important; color: #000 !important; }
+
+.city-menu { max-width: 420px; width: 100%; }
+:deep(.v-menu__content) { max-width: 100% !important; }
 </style>

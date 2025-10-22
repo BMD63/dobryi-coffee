@@ -1,34 +1,50 @@
 <template>
-  <div class="user-card">
-    <v-list-item three-line>
-      <v-list-item-content>
-        <div class="user-line">
-          <span class="user-name">{{ name }}</span>
-          <span class="user-phone grey--text text--darken-1"> — {{ phone }}</span>
-        </div>
+  <v-card class="user-card">
+    <div class="content">
+      <div class="title-line">
+        <span class="name">{{ name }}</span>
+        <span class="phone">&nbsp;—&nbsp;{{ phone }}</span>
+      </div>
 
-        <div class="caption mt-1">
-          <a class="city-link" href="javascript:void(0)" @click="$emit('city-click', city.id)">
-            {{ city.title }}
-          </a>
-          · Баланс: {{ balance }} ₽
-          · Накоплено: {{ saveTotal }} ₽
-          · Потрачено: {{ spendTotal }} ₽
-          · Последний визит: {{ formatDate(lastVisit) }}
-        </div>
-      </v-list-item-content>
+      <div class="meta caption">
+        <a href="#" class="city" @click.prevent="$emit('city-click', city.id)">{{ city.title }}</a>
+        · Баланс: {{ money(balance) }}
+        · Накоплено: {{ money(saveTotal) }}
+        · Потрачено: {{ money(spendTotal) }}
+        · Последний визит: {{ formatDate(lastVisit) }}
+      </div>
 
-      <v-list-item-action>
-        <NuxtLink :to="`/users/${id}`">
-          <v-btn small outlined class="btn-outline-accent">Детали</v-btn>
-        </NuxtLink>
-      </v-list-item-action>
-    </v-list-item>
-  </div>
+      <div class="action-mobile d-flex d-sm-none">
+        <v-btn
+          :to="`/users/${id}`"
+          outlined
+          small
+          block
+          color="accent"
+          class="btn-details mt-2"
+        >
+          Детали
+        </v-btn>
+      </div>
+    </div>
+
+    <div class="action d-none d-sm-flex">
+      <v-btn
+        :to="`/users/${id}`"
+        outlined
+        small
+        color="accent"
+        class="btn-details"
+      >
+        Детали
+      </v-btn>
+    </div>
+  </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+type City = { id: string; title: string }
 
 export default defineComponent({
   name: 'UserItem',
@@ -36,47 +52,52 @@ export default defineComponent({
     id: { type: String, required: true },
     name: { type: String, required: true },
     phone: { type: String, required: true },
-    city: { type: Object as PropType<{ id: string; title: string }>, required: true },
+    city: { type: Object as PropType<City>, required: true },
     balance: { type: Number, required: true },
     saveTotal: { type: Number, required: true },
     spendTotal: { type: Number, required: true },
     lastVisit: { type: Number, required: true }
   },
   methods: {
-    formatDate (ts: number) {
-      return new Date(ts).toLocaleDateString()
-    }
+    money (n: number) { return `${n} ₽` },
+    formatDate (ts: number) { return new Date(ts).toLocaleDateString() }
   }
 })
 </script>
 
 <style scoped>
 .user-card {
-  border-radius: 6px;
-  padding: 6px 8px;
-  border: 1px solid;
-  background: #1b1b1b;
-  border-color: rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: #202020;
 }
 .theme--light .user-card {
-  background: #ffffff;
+  background: #F5F5F5;
   border-color: rgba(0,0,0,.08);
 }
 
-.btn-outline-accent {
-  border: 1px solid #FFD166 !important;
-  background: transparent !important;
-  text-transform: none;
+/* контент */
+.content { min-width: 0; flex: 1; }
+.title-line { font-weight: 700; color: inherit; }
+.name { color: inherit; }
+.phone { opacity: .85; }
+
+/* мета */
+.meta { color: inherit; opacity: .9; }
+.city { text-decoration: none; border-bottom: 1px dotted currentColor; }
+.city:hover { opacity: .9; }
+
+/* действия */
+.action { margin-left: 16px; }
+.btn-details { border-width: 2px; }
+
+/* на очень узких чутка ужимаем внутренние поля */
+@media (max-width: 360px) {
+  .user-card { padding-left: 10px; padding-right: 10px; }
 }
-:deep(.theme--light) .btn-outline-accent { color: #000 !important; }
-:deep(.theme--dark)  .btn-outline-accent { color: #FFD166 !important; }
-.btn-outline-accent:hover { background: #FFD166 !important; color: #000 !important; }
-
-/* кликабельный город */
-.city-link { text-decoration: none; color: inherit; border-bottom: 1px dashed rgba(0,0,0,.3); }
-:deep(.theme--dark) .city-link { border-bottom-color: rgba(255,255,255,.35); }
-.city-link:hover { opacity: .85; }
-
-.user-line { font-weight: 700; }
-.user-phone { font-weight: 400; }
 </style>

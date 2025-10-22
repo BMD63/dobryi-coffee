@@ -6,7 +6,7 @@
       <!-- LOADING -->
       <div v-if="$fetchState.pending">
         <div class="users-list">
-          <div v-for="n in 8" :key="n" class="user-skel">
+          <div v-for="n in 6" :key="n" class="user-skel">
             <v-skeleton-loader type="text" width="60%" class="mb-2" />
             <v-skeleton-loader type="text" width="40%" />
             <div class="d-flex mt-3">
