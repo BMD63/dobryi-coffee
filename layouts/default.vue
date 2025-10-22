@@ -1,51 +1,60 @@
 <template>
   <v-app>
-    <!-- mini sidebar -->
-    <v-navigation-drawer
-      app
-      permanent
-      mini-variant
-      :mini-variant-width="72"
-    >
-      <v-list dense nav>
-        <v-list-item disabled>
-          <v-list-item-icon>
-            <v-icon>mdi-account-group</v-icon>
-          </v-list-item-icon>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <app-sidebar />
 
-    <!-- top app bar -->
-    <v-app-bar app dense flat>
-      <v-toolbar-title class="h1">Добрый кофе</v-toolbar-title>
+    <v-app-bar app dense flat clipped-left class="app-bar">
+      <v-toolbar-title class="font-weight-bold">Добрый кофе</v-toolbar-title>
       <v-spacer />
-      <v-btn icon :title="themeTitle" @click="toggleTheme">
-        <v-icon v-if="$vuetify.theme.dark">mdi-white-balance-sunny</v-icon>
+      <v-btn icon @click="toggleTheme" :title="dark ? 'Светлая тема' : 'Тёмная тема'">
+        <v-icon v-if="dark">mdi-weather-sunny</v-icon>
         <v-icon v-else>mdi-weather-night</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <!-- page content -->
-    <v-main>
-      <v-container fluid>
-        <nuxt />
+    <v-main class="app-main">
+      <v-container class="app-container" fluid>
+        <Nuxt />
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import AppSidebar from '~/components/AppSidebar.vue'
+
 export default {
-  computed: {
-    themeTitle () {
-      return this.$vuetify.theme.dark ? 'Переключить на светлую' : 'Переключить на тёмную'
-    }
-  },
+  name: 'DefaultLayout',
+  components: { AppSidebar },
+  computed: { dark () { return this.$vuetify.theme.dark } },
   methods: {
     toggleTheme () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      try { localStorage.setItem('themeDark', String(this.$vuetify.theme.dark)) } catch (e) {}
     }
+  },
+  mounted () {
+    try {
+      const saved = localStorage.getItem('themeDark')
+      if (saved != null) this.$vuetify.theme.dark = saved === 'true'
+    } catch (e) {}
   }
 }
 </script>
+
+<style scoped>
+.app-main.theme--light { background: #EEEEEE; }
+.app-main.theme--dark  { background: #121212; }
+
+.app-container {
+  max-width: 1100px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.app-bar {
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.theme--dark .app-bar {
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+</style>

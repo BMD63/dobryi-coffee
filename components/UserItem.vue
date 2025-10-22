@@ -18,7 +18,7 @@
 
     <v-list-item-action>
       <NuxtLink :to="`/users/${id}`">
-        <v-btn small class="btn-accent">Детали</v-btn>
+        <v-btn small outlined class="btn-outline-accent">Детали</v-btn>
       </NuxtLink>
     </v-list-item-action>
   </v-list-item>
@@ -50,8 +50,22 @@ export default defineComponent({
 <style scoped>
 .user-item { border-bottom: 1px solid rgba(0,0,0,.06); }
 .city-link { text-transform: none; }
-.btn-accent {
-  background-color: #FFD166 !important;
+
+.btn-outline-accent {
+  border: 1px solid #FFD166 !important;
+  background: transparent !important;
+  text-transform: none;
+}
+:deep(.theme--light) .btn-outline-accent {
+  color: #000 !important;
+}
+
+:deep(.theme--dark) .btn-outline-accent {
+  color: #FFD166 !important;
+}
+
+.btn-outline-accent:hover {
+  background: #FFD166 !important;
   color: #000 !important;
 }
 </style>
