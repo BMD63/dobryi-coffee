@@ -2,19 +2,31 @@
   <client-only>
     <div class="users-page">
       <div class="h1 mb-4">Пользователи</div>
+
+      <!-- LOADING -->
       <div v-if="$fetchState.pending">
-        <v-card class="mb-4 pa-4">
-          <v-skeleton-loader type="list-item@5" class="mb-3" />
-          <v-progress-linear
-            :value="Math.min(100, Math.round((loaded / totalAll) * 100))"
-            height="6"
-            striped
-          />
-          <div class="caption mt-1">Загружено: {{ loaded }} из {{ totalAll }}</div>
-        </v-card>
+        <div class="users-list">
+          <div v-for="n in 8" :key="n" class="user-skel">
+            <v-skeleton-loader type="text" width="60%" class="mb-2" />
+            <v-skeleton-loader type="text" width="40%" />
+            <div class="d-flex mt-3">
+              <v-spacer />
+              <v-skeleton-loader type="button" width="84" height="28" />
+            </div>
+          </div>
+        </div>
+
+        <v-progress-linear
+          :value="Math.min(100, Math.round((loaded / totalAll) * 100))"
+          height="6"
+          striped
+          class="mt-4"
+        />
+        <div class="caption mt-1">Загружено: {{ loaded }} из {{ totalAll }}</div>
       </div>
 
       <div v-else>
+        <!-- фильтры -->
         <v-card class="mb-4 pa-3">
           <users-toolbar
             :cities="cityList"
@@ -27,27 +39,23 @@
             Найдено: <strong>{{ filteredUsers.length }}</strong> · Страница {{ page }} из {{ pageCount }}
           </div>
         </v-card>
+        <div class="users-list">
+          <user-item
+            v-for="u in paginated"
+            :key="u.id"
+            :id="u.id"
+            :name="u.name"
+            :phone="u.phone"
+            :city="u.city"
+            :balance="u.balance"
+            :save-total="u.saveTotal"
+            :spend-total="u.spendTotal"
+            :last-visit="u.lastVisit"
+            @city-click="onCityClick"
+          />
+        </div>
 
-        <!-- Список -->
-        <v-card class="mb-4">
-          <v-list two-line dense>
-            <user-item
-              v-for="u in paginated"
-              :key="u.id"
-              :id="u.id"
-              :name="u.name"
-              :phone="u.phone"
-              :city="u.city"
-              :balance="u.balance"
-              :save-total="u.saveTotal"
-              :spend-total="u.spendTotal"
-              :last-visit="u.lastVisit"
-              @city-click="onCityClick"
-            />
-          </v-list>
-        </v-card>
-
-        <!-- Пагинация -->
+        <!-- пагинация -->
         <div class="d-flex justify-center mt-6">
           <v-pagination
             v-model="page"
@@ -107,12 +115,14 @@ export default defineComponent({
       return
     }
 
+    // первая порция 100
     {
       const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
       this.users.push(...items)
       this.loaded = this.users.length
     }
 
+    // оставшиеся по 500
     let offset = this.loaded
     while (offset < USERS_TOTAL) {
       const remaining = USERS_TOTAL - offset
@@ -133,7 +143,7 @@ export default defineComponent({
       const q = this.search.trim().toLowerCase()
       const selected = new Set(this.selectedCities)
       const norm = (s: string) => s.replace(/[\s-]/g, '')
-      return this.users.filter(u => {
+      return this.users.filter((u: User) => {
         const byQuery =
           !q ||
           u.name.toLowerCase().includes(q) ||
@@ -155,20 +165,28 @@ export default defineComponent({
     selectedCities () { this.page = 1 }
   },
   methods: {
-    formatDate (ts: number) {
-      return new Date(ts).toLocaleDateString()
-    },
-    onCityClick (cityId: string) {
-      this.selectedCities = [cityId]
-      this.page = 1
-    }
+    formatDate (ts: number) { return new Date(ts).toLocaleDateString() },
+    onCityClick (cityId: string) { this.selectedCities = [cityId]; this.page = 1 }
   }
 })
 </script>
 
 <style scoped>
-.users-page :deep(.v-card) {
-  border-radius: 14px;
+.users-list {
+  display: grid;
+  grid-gap: 12px;
+}
+
+.user-skel {
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid;
+  background: #1b1b1b;
+  border-color: rgba(255,255,255,.08);
+}
+:deep(.theme--light) .user-skel {
+  background: #ffffff;
+  border-color: rgba(0,0,0,.08);
 }
 
 :deep(.pagination--compact .v-pagination__navigation),
@@ -183,7 +201,7 @@ export default defineComponent({
   border: 1px solid;
 }
 
-/* светлая тема — белые плитки */
+/* светлая тема  */
 :deep(.theme--light .pagination--compact .v-pagination__navigation),
 :deep(.theme--light .pagination--compact .v-pagination__item) {
   background: #fff;
@@ -191,7 +209,7 @@ export default defineComponent({
   color: rgba(0,0,0,.87);
 }
 
-/* тёмная тема — тёмные плитки */
+/* тёмная тема  */
 :deep(.theme--dark .pagination--compact .v-pagination__navigation),
 :deep(.theme--dark .pagination--compact .v-pagination__item) {
   background: #1E1E1E;
@@ -199,7 +217,7 @@ export default defineComponent({
   color: rgba(255,255,255,.87);
 }
 
-/* активная страница — жёлтая (усиленная специфичность) */
+/* активная страница  */
 :deep(.pagination--compact .v-pagination__item.v-pagination__item--active) {
   background-color: #FFD166 !important;
   border-color: #FFD166 !important;
@@ -211,4 +229,3 @@ export default defineComponent({
   line-height: 28px;
 }
 </style>
-
