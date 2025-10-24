@@ -21,7 +21,10 @@
           <!-- Основное -->
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
-              <div class="h2 mb-3">Основное</div>
+              <div class="section-title mb-3">
+                <v-icon class="section-icon" aria-hidden="true">mdi-account-circle-outline</v-icon>
+                <span>Основное</span>
+              </div>
 
               <div class="row-item"><span class="label">Имя</span><span class="value">{{ user.name }}</span></div>
               <div class="row-item"><span class="label">Телефон</span><span class="value">{{ user.phone }}</span></div>
@@ -34,7 +37,10 @@
           <!-- Финансы -->
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
-              <div class="h2 mb-3">Финансы</div>
+              <div class="section-title mb-3">
+                <v-icon class="section-icon" aria-hidden="true">mdi-cash-multiple</v-icon>
+                <span>Финансы</span>
+              </div>
 
               <div class="row-item"><span class="label">Баланс</span><span class="value">{{ user.balance }} ₽</span></div>
               <div class="row-item"><span class="label">Кэшбэк, %</span><span class="value">{{ user.cashbackPercent }}%</span></div>
@@ -46,7 +52,10 @@
           <!-- Даты -->
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
-              <div class="h2 mb-3">Даты</div>
+              <div class="section-title mb-3">
+                <v-icon class="section-icon" aria-hidden="true">mdi-calendar-clock</v-icon>
+                <span>Даты</span>
+              </div>
 
               <div class="row-item"><span class="label">Создан</span><span class="value">{{ d(user.createdAt) }}</span></div>
               <div class="row-item"><span class="label">Обновлён</span><span class="value">{{ d(user.updatedAt) }}</span></div>
@@ -59,7 +68,10 @@
           <!-- Служебное -->
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
-              <div class="h2 mb-3">Служебное</div>
+              <div class="section-title mb-3">
+                <v-icon class="section-icon" aria-hidden="true">mdi-cog-outline</v-icon>
+                <span>Служебное</span>
+              </div>
 
               <div class="row-item"><span class="label">ID</span><span class="value mono">{{ user.id }}</span></div>
               <div class="row-item"><span class="label">Город (ID)</span><span class="value mono">{{ user.city.id }}</span></div>
@@ -93,14 +105,12 @@ export default defineComponent({
     const id = this.$route.params.id
     if (!id) return
 
-    // из кэша
     const cached = (this.$store.state as any).users
     if (cached?.list?.length) {
       this.user = cached.list.find((u: User) => u.id === id) || null
       if (this.user) return
     }
 
-    // дозагрузка как в списке
     let offset = 0
     {
       const { items } = await (this as any).$api.users.list({ offset, limit: USERS_FIRST_LIMIT })
@@ -125,6 +135,20 @@ export default defineComponent({
 
 <style scoped>
 .user-details .h2 { font-size: 16px; line-height: 20px; font-weight: 700; }
+
+/* Заголовки секций с иконкой */
+.section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+.section-icon {
+  font-size: 18px;
+  opacity: .9;
+}
 
 /* Карточка */
 .user-card {
