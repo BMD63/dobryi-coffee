@@ -1,174 +1,79 @@
 <template>
   <client-only>
     <div class="user-details">
-      <v-btn text small class="mb-3" @click="$router.back()">
-        <v-icon left small>mdi-arrow-left</v-icon> Назад
-      </v-btn>
+      <div class="h1 mb-4">Профиль пользователя</div>
 
-      <v-card v-if="$fetchState.pending" class="pa-4">
-        <v-skeleton-loader type="list-item-avatar, list-item-two-line, divider, list-item-three-line" />
+      <!-- Skeleton / loading -->
+      <v-card v-if="$fetchState.pending" class="pa-4 user-card">
+        <v-skeleton-loader type="list-item@3" class="mb-4" />
+        <v-skeleton-loader type="list-item@3" class="mb-4" />
+        <v-skeleton-loader type="list-item@3" />
       </v-card>
 
-      <v-card v-else-if="user" class="pa-4">
-        <div class="d-flex align-center mb-2">
-          <div class="h1 mr-3">{{ user.name }}</div>
-          <v-chip v-if="user.isBlocked" small color="error" text-color="white">Заблокирован</v-chip>
-        </div>
-
-        <v-row dense>
-          <!-- ОСНОВНОЕ -->
-          <v-col cols="12" md="6">
-            <v-list two-line dense class="flat-list">
-              <v-subheader>Основное</v-subheader>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>ID</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.id }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <!-- Имя в заголовке, здесь не дублируем -->
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Телефон</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.phone }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Роль</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.role }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Заблокирован</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.isBlocked ? 'Да' : 'Нет' }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Город (title)</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.city.title }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Город (id)</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.city.id }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-
-          <!-- ФИНАНСЫ -->
-          <v-col cols="12" md="6">
-            <v-list two-line dense class="flat-list">
-              <v-subheader>Финансы</v-subheader>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Баланс</v-list-item-title>
-                  <v-list-item-subtitle>{{ money(user.balance) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Кэшбэк, %</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.cashbackPercent }}%</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Накоплено (saveTotal)</v-list-item-title>
-                  <v-list-item-subtitle>{{ money(user.saveTotal) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Кол-во начислений (saveCount)</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.saveCount }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Потрачено (spendTotal)</v-list-item-title>
-                  <v-list-item-subtitle>{{ money(user.spendTotal) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Кол-во трат (spendCount)</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.spendCount }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-
-          <!-- ДАТЫ -->
-          <v-col cols="12" md="6">
-            <v-list two-line dense class="flat-list">
-              <v-subheader>Даты</v-subheader>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Последний визит</v-list-item-title>
-                  <v-list-item-subtitle>{{ dt(user.lastVisit) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Последнее начисление</v-list-item-title>
-                  <v-list-item-subtitle>{{ dt(user.lastSave) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Последний расход</v-list-item-title>
-                  <v-list-item-subtitle>{{ dt(user.lastSpend) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <v-list two-line dense class="flat-list">
-              <v-subheader>Служебные</v-subheader>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Создан (createdAt)</v-list-item-title>
-                  <v-list-item-subtitle>{{ dt(user.createdAt) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Обновлён (updatedAt)</v-list-item-title>
-                  <v-list-item-subtitle>{{ dt(user.updatedAt) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <v-alert v-else type="error" outlined>
+      <!-- Not found -->
+      <v-alert v-else-if="!user" type="error" outlined class="mb-4">
         Пользователь не найден.
       </v-alert>
+
+      <!-- Content -->
+      <v-container v-else fluid class="pa-0">
+        <v-row dense>
+          <!-- Основное -->
+          <v-col cols="12" md="6">
+            <v-card class="user-card pa-4">
+              <div class="h2 mb-3">Основное</div>
+
+              <div class="row-item"><span class="label">Имя</span><span class="value">{{ user.name }}</span></div>
+              <div class="row-item"><span class="label">Телефон</span><span class="value">{{ user.phone }}</span></div>
+              <div class="row-item"><span class="label">Город</span><span class="value">{{ user.city.title }}</span></div>
+              <div class="row-item"><span class="label">Роль</span><span class="value">{{ user.role }}</span></div>
+              <div class="row-item"><span class="label">Заблокирован</span><span class="value">{{ user.isBlocked ? 'Да' : 'Нет' }}</span></div>
+            </v-card>
+          </v-col>
+
+          <!-- Финансы -->
+          <v-col cols="12" md="6">
+            <v-card class="user-card pa-4">
+              <div class="h2 mb-3">Финансы</div>
+
+              <div class="row-item"><span class="label">Баланс</span><span class="value">{{ user.balance }} ₽</span></div>
+              <div class="row-item"><span class="label">Кэшбэк, %</span><span class="value">{{ user.cashbackPercent }}%</span></div>
+              <div class="row-item"><span class="label">Накоплено (всего / операций)</span><span class="value">{{ user.saveTotal }} ₽ / {{ user.saveCount }}</span></div>
+              <div class="row-item"><span class="label">Потрачено (всего / операций)</span><span class="value">{{ user.spendTotal }} ₽ / {{ user.spendCount }}</span></div>
+            </v-card>
+          </v-col>
+
+          <!-- Даты -->
+          <v-col cols="12" md="6">
+            <v-card class="user-card pa-4">
+              <div class="h2 mb-3">Даты</div>
+
+              <div class="row-item"><span class="label">Создан</span><span class="value">{{ d(user.createdAt) }}</span></div>
+              <div class="row-item"><span class="label">Обновлён</span><span class="value">{{ d(user.updatedAt) }}</span></div>
+              <div class="row-item"><span class="label">Последний визит</span><span class="value">{{ d(user.lastVisit) }}</span></div>
+              <div class="row-item"><span class="label">Последнее пополнение</span><span class="value">{{ d(user.lastSave) }}</span></div>
+              <div class="row-item"><span class="label">Последняя покупка</span><span class="value">{{ d(user.lastSpend) }}</span></div>
+            </v-card>
+          </v-col>
+
+          <!-- Служебное -->
+          <v-col cols="12" md="6">
+            <v-card class="user-card pa-4">
+              <div class="h2 mb-3">Служебное</div>
+
+              <div class="row-item"><span class="label">ID</span><span class="value mono">{{ user.id }}</span></div>
+              <div class="row-item"><span class="label">Город (ID)</span><span class="value mono">{{ user.city.id }}</span></div>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <!-- Отдельная кнопка назад -->
+        <div class="back-wrap mt-4">
+          <v-btn text small :to="{ path: '/users' }" class="back-btn">
+            ← К списку пользователей
+          </v-btn>
+        </div>
+      </v-container>
     </div>
   </client-only>
 </template>
@@ -185,36 +90,69 @@ export default defineComponent({
   },
   fetchOnServer: false,
   async fetch () {
-    const id = this.$route.params.id as string
+    const id = this.$route.params.id
+    if (!id) return
 
-    const storeUsers = (this.$store.state as any).users
-    if (storeUsers && storeUsers.list && storeUsers.list.length) {
-      const cached = (storeUsers.list as User[]).find(u => u.id === id) || null
-      if (cached) { this.user = cached; return }
+    // из кэша
+    const cached = (this.$store.state as any).users
+    if (cached?.list?.length) {
+      this.user = cached.list.find((u: User) => u.id === id) || null
+      if (this.user) return
     }
 
+    // дозагрузка как в списке
+    let offset = 0
     {
-      const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
-      const found = (items as User[]).find(u => u.id === id) || null
-      if (found) { this.user = found; return }
+      const { items } = await (this as any).$api.users.list({ offset, limit: USERS_FIRST_LIMIT })
+      this.user = items.find((u: User) => u.id === id) || null
+      if (this.user) return
+      offset += items.length
     }
-    let offset = USERS_FIRST_LIMIT
     while (!this.user && offset < USERS_TOTAL) {
       const limit = Math.min(USERS_MAX_LIMIT, USERS_TOTAL - offset)
       const { items } = await (this as any).$api.users.list({ offset, limit })
-      const found = (items as User[]).find((u: User) => u.id === id) || null
-      if (found) { this.user = found; break }
-      offset += (items as User[]).length
+      this.user = items.find((u: User) => u.id === id) || null
+      offset += items.length
     }
   },
   methods: {
-    dt (ts: number) { return ts ? new Date(ts).toLocaleDateString() : '—' },
-    money (n: number) { return `${n} ₽` }
+    d (ts: number) {
+      try { return new Date(ts).toLocaleDateString() } catch { return '-' }
+    }
   }
 })
 </script>
 
 <style scoped>
-.user-details .v-card { border-radius: 12px; }
-.flat-list { background: transparent !important; }
+.user-details .h2 { font-size: 16px; line-height: 20px; font-weight: 700; }
+
+/* Карточка */
+.user-card {
+  border-radius: 10px;
+  background: #1b1b1b;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.theme--light .user-card {
+  background: #fff;
+  border-color: rgba(0,0,0,.08);
+}
+
+/* Ряд "метка — значение" */
+.row-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.07);
+}
+.theme--light .row-item { border-bottom-color: rgba(0,0,0,.08); }
+.row-item:last-child { border-bottom: 0; }
+
+.label { font-size: 12px; line-height: 14px; opacity: .7; }
+.value { font-size: 14px; line-height: 18px; font-weight: 700; }
+.mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+/* Кнопка назад отдельно от карточек */
+.back-wrap { display: flex; }
+.back-btn  { padding-left: 0; }
 </style>
