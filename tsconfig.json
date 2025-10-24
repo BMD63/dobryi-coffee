@@ -15,7 +15,8 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": ["@nuxt/types", "@types/node"]
+    "types": ["@nuxt/types", "@types/node", "@nuxtjs/vuetify"]
   },
+  "include": ["**/*", "types/**/*.d.ts"],
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

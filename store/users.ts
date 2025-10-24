@@ -1,4 +1,3 @@
-// store/users.ts
 import type { User } from '~/plugins/api'
 
 export const state = () => ({

@@ -12,13 +12,13 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }, // 👈 фикс
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap' }
     ]
   },
 
   // Global CSS
-  css: ['@/assets/scss/main.scss'],
+  css: ['~/assets/scss/main.scss'],
 
   // Plugins
   plugins: ['~/plugins/api.ts'],
@@ -37,29 +37,17 @@ export default {
 
   // Vuetify configuration
   vuetify: {
-    customVariables: [], // при желании можно подключить '~/assets/variables.scss'
-    theme: {
-      dark: false, // по умолчанию светлая тема
-      themes: {
-        light: {
-          background: '#FFFFFF',
-          primary: '#FFFFFF',
-          secondary: '#EEEEEE',
-          accent: '#FFD166',
-          info: '#787878',
-          text: '#000000'
-        },
-        dark: {
-          background: '#121212',
-          primary: '#1e1e1e',
-          secondary: '#2a2a2a',
-          accent: '#FFD166',
-          info: '#9e9e9e',
-          text: '#FFFFFF'
-        }
-      }
-    }
-  },
+  customVariables: ['~/assets/scss/_tokens.scss'], //  токены
+  treeShake: true,
+  theme: {
+    dark: false,
+    themes: {
+      light: { background: '#FFFFFF', primary: '#FFFFFF', secondary: '#EEEEEE', accent: '#FFD166', info: '#787878', text: '#000000' },
+      dark:  { background: '#121212', primary: '#1e1e1e', secondary: '#2a2a2a', accent: '#FFD166', info: '#9e9e9e', text: '#FFFFFF' }
+    },
+    options: { customProperties: true }
+  }
+},
 
   // Build configuration
   build: {}

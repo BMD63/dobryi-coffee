@@ -1,49 +1,86 @@
 <template>
-  <v-card class="user-card">
-    <div class="content">
-      <div class="title-line">
-        <span class="name">{{ name }}</span>
-        <span class="phone">&nbsp;—&nbsp;{{ phone }}</span>
+  <div class="user-card">
+    <div class="d-flex align-center flex-wrap" style="min-width:0;">
+      <div class="mr-4" style="min-width:0;">
+        <div class="h1 truncate">{{ name }}</div>
+        <div class="caption mt-1">{{ phone }}</div>
+        <div class="mt-1">
+          <v-btn
+            text small class="px-0"
+            @click="$emit('city-click', city.id)"
+            :aria-label="`Фильтровать по городу: ${city.title}`"
+          >
+            <v-icon left small class="mr-1">mdi-map-marker</v-icon>{{ city.title }}
+          </v-btn>
+        </div>
       </div>
 
-      <div class="meta caption">
-        <a href="#" class="city" @click.prevent="$emit('city-click', city.id)">{{ city.title }}</a>
-        · Баланс: {{ money(balance) }}
-        · Накоплено: {{ money(saveTotal) }}
-        · Потрачено: {{ money(spendTotal) }}
-        · Последний визит: {{ formatDate(lastVisit) }}
-      </div>
-
-      <div class="action-mobile d-flex d-sm-none">
-        <v-btn
-          :to="`/users/${id}`"
-          outlined
-          small
-          block
-          color="accent"
-          class="btn-details mt-2"
-        >
-          Детали
-        </v-btn>
+      <div class="d-none d-sm-flex align-center flex-wrap">
+        <div class="mr-5">
+          <div class="caption">Баланс</div>
+          <div class="font-weight-bold">{{ money(balance) }}</div>
+        </div>
+        <div class="mr-5">
+          <div class="caption">Накоплено</div>
+          <div class="font-weight-bold">{{ money(saveTotal) }}</div>
+        </div>
+        <div class="mr-5">
+          <div class="caption">Потрачено</div>
+          <div class="font-weight-bold">{{ money(spendTotal) }}</div>
+        </div>
+        <div>
+          <div class="caption">Последний визит</div>
+          <div class="font-weight-bold">{{ dt(lastVisit) }}</div>
+        </div>
       </div>
     </div>
 
-    <div class="action d-none d-sm-flex">
+    <div class="d-none d-sm-flex">
       <v-btn
         :to="`/users/${id}`"
         outlined
         small
-        color="accent"
-        class="btn-details"
+        class="btn-accent-outlined"
+        aria-label="Открыть детали пользователя"
       >
         Детали
       </v-btn>
     </div>
-  </v-card>
+
+    <div class="d-sm-none" style="width:100%; margin-top:8px;">
+      <div class="d-flex align-center justify-space-between">
+        <div>
+          <div class="caption">Баланс</div>
+          <div class="font-weight-bold">{{ money(balance) }}</div>
+        </div>
+        <div>
+          <div class="caption">Накоплено</div>
+          <div class="font-weight-bold">{{ money(saveTotal) }}</div>
+        </div>
+        <div>
+          <div class="caption">Потрачено</div>
+          <div class="font-weight-bold">{{ money(spendTotal) }}</div>
+        </div>
+      </div>
+      <div class="caption mt-2">Последний визит: <strong>{{ dt(lastVisit) }}</strong></div>
+
+      <v-btn
+        :to="`/users/${id}`"
+        outlined
+        small
+        block
+        class="btn-accent-outlined mt-3"
+        aria-label="Открыть детали пользователя"
+      >
+        Детали
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+
 type City = { id: string; title: string }
 
 export default defineComponent({
@@ -59,45 +96,21 @@ export default defineComponent({
     lastVisit: { type: Number, required: true }
   },
   methods: {
-    money (n: number) { return `${n} ₽` },
-    formatDate (ts: number) { return new Date(ts).toLocaleDateString() }
+    money (n: number): string {
+      try {
+        return new Intl.NumberFormat('ru-RU').format(n) + ' ₽'
+      } catch {
+        return `${n} ₽`
+      }
+    },
+    dt (ts: number): string {
+      if (!ts) return '—'
+      try {
+        return new Date(ts).toLocaleDateString('ru-RU')
+      } catch {
+        return '—'
+      }
+    }
   }
 })
 </script>
-
-<style scoped>
-.user-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.06);
-  background: #202020;
-}
-.theme--light .user-card {
-  background: #F5F5F5;
-  border-color: rgba(0,0,0,.08);
-}
-
-/* контент */
-.content { min-width: 0; flex: 1; }
-.title-line { font-weight: 700; color: inherit; }
-.name { color: inherit; }
-.phone { opacity: .85; }
-
-/* мета */
-.meta { color: inherit; opacity: .9; }
-.city { text-decoration: none; border-bottom: 1px dotted currentColor; }
-.city:hover { opacity: .9; }
-
-/* действия */
-.action { margin-left: 16px; }
-.btn-details { border-width: 2px; }
-
-/* на очень узких чутка ужимаем внутренние поля */
-@media (max-width: 360px) {
-  .user-card { padding-left: 10px; padding-right: 10px; }
-}
-</style>

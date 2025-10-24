@@ -180,52 +180,17 @@ export default defineComponent({
 .user-skel {
   border-radius: 6px;
   padding: 12px;
-  border: 1px solid;
   background: #1b1b1b;
-  border-color: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.08);
 }
+
 :deep(.theme--light) .user-skel {
   background: #ffffff;
   border-color: rgba(0,0,0,.08);
 }
 
-:deep(.pagination--compact .v-pagination__navigation),
-:deep(.pagination--compact .v-pagination__item) {
-  height: 28px;
-  min-width: 28px;
-  font-size: 12px;
-  line-height: 28px;
-  margin: 0 2px;
-  border-radius: 6px;
-  box-shadow: none;
-  border: 1px solid;
-}
-
-/* светлая тема  */
-:deep(.theme--light .pagination--compact .v-pagination__navigation),
-:deep(.theme--light .pagination--compact .v-pagination__item) {
-  background: #fff;
-  border-color: rgba(0,0,0,.12);
-  color: rgba(0,0,0,.87);
-}
-
-/* тёмная тема  */
-:deep(.theme--dark .pagination--compact .v-pagination__navigation),
-:deep(.theme--dark .pagination--compact .v-pagination__item) {
-  background: #1E1E1E;
-  border-color: rgba(255,255,255,.12);
-  color: rgba(255,255,255,.87);
-}
-
-/* активная страница  */
-:deep(.pagination--compact .v-pagination__item.v-pagination__item--active) {
-  background-color: #FFD166 !important;
-  border-color: #FFD166 !important;
-  color: #000 !important;
-}
-
-:deep(.pagination--compact .v-pagination__navigation .v-icon) {
-  font-size: 16px;
-  line-height: 28px;
+@media (max-width: 600px) {
+  .users-list { grid-gap: 8px; }
 }
 </style>
+

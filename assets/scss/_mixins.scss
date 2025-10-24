@@ -1,0 +1,12 @@
+@import './_tokens';
+
+@mixin card-surface($bg-dark: #202020, $bg-light: #F5F5F5, $radius: $radius-md) {
+  border-radius: $radius;
+  border: 1px solid rgba(255,255,255,.06);
+  background: $bg-dark;
+
+  .theme--light & {
+    background: $bg-light;
+    border-color: rgba(0,0,0,.08);
+  }
+}
