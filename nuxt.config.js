@@ -11,7 +11,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }, // 👈 фикс
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap' }
     ]

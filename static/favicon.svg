@@ -1,0 +1,16 @@
+<!-- static/favicon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .a{fill:none;stroke:#FFD166;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <!-- Чашка -->
+  <path class="a" d="M10 26h32a0 0 0 0 1 0 0v10a10 10 0 0 1-10 10H20A10 10 0 0 1 10 36V26z"/>
+  <path class="a" d="M42 30h6a6 6 0 0 1 0 12h-6"/>
+  <!-- Блюдце -->
+  <path class="a" d="M6 50h44"/>
+  <!-- Пар -->
+  <path class="a" d="M22 12c-4 4 4 6 0 10"/>
+  <path class="a" d="M30 10c-4 4 4 6 0 10"/>
+</svg>

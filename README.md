@@ -1,68 +1,180 @@
-# dobryi-coffee
+# Добрый кофе — тестовое задание (Nuxt 2 + Vue 2 + Vuetify)
 
-## Build Setup
+Страница “Пользователи” с акцентом на аккуратный UI/UX, структурный SCSS и адаптивную вёрстку. Проект развёрнут на **Nuxt 2 (SSR)** с **Vuetify** и **TypeScript**.
+
+---
+
+## 🚀 Быстрый старт
 
 ```bash
-# install dependencies
-$ npm install
+# Установка
+npm i
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+# Дев-сервер (http://localhost:3000)
+npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+# Линт
+npm run lint:js
 
-# generate static project
-$ npm run generate
+# Продакшн-сборка и запуск
+npm run build
+npm run start
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+**Требования:** Node 16+ (LTS), npm 8+.
 
-## Special Directories
+---
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+## 🧱 Что реализовано
 
-### `assets`
+- **/users**
+  - Боковой **sidebar** (rail/expanded), в мобильной версии — как оверлей.
+  - **Тёмная/светлая тема** (toggle в AppBar). Цвета соответствуют ТЗ:
+    - основной `#FFFFFF`, вспомогательный `#EEEEEE`, акцент `#FFD166`,
+    - шрифты Nunito: h1 — 24/28 700; body — 14/16 400; caption — 10/12 400 `#787878`.
+  - **Загрузка 8000 пользователей** из фабрики `plugins/api`:
+    - Первый запрос: `100`,
+    - последующие — пачками до `500`,
+    - искусственная задержка 500 мс между запросами,
+    - **skeleton** во время загрузки.
+  - **Кэш** списка пользователей в **Vuex** → моментальный возврат со страницы деталей.
+  - **Поиск** по имени/телефону (нормализация: убраны пробелы/дефисы).
+  - **Фильтр по городам** (multi-select):
+    - чипы выбранных городов,
+    - на desktop — фиксированная полоса чипов над фильтром (вёрстка не «прыгает»),
+    - на mobile — чипы под поиском (естественный флоу).
+  - **Пагинация** по 50 на страницу (стилизована под макет).
+  - **Карточки пользователей** (аккуратный контентный блок + кнопка «Детали»):
+    - на очень узких экранах кнопка переезжает вниз карточки.
+  - **Детали пользователя**: представлен полный набор полей из ТЗ; имя — заголовком.
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+- **Главная /** 
+  - Небольшой **dashboard-stub**: карточка перехода на «Пользователи».
+  - Сайдбар по умолчанию **развёрнут** (лучший UX для первого входа).
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+- **Прочие разделы меню**
+  - **Заглушки-страницы** с единым компонентом `PageStub` (чтобы не 404).
 
-### `components`
+---
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+## 🗂 Структура проекта
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+```
+.
+├─ assets/
+│  └─ scss/main.scss            # токены и базовые стили (Nunito, caption/body/h1)
+├─ components/
+│  ├─ AppSidebar.vue            # боковое меню: desktop rail/expanded + mobile overlay
+│  ├─ ThemeToggle.vue           # переключатель темы (оформлен как тумблер)
+│  ├─ UserItem.vue              # карточка пользователя
+│  └─ UsersToolbar.vue          # поиск, фильтр, чипы выбранных городов
+├─ constants/
+│  ├─ users.ts                  # TOTAL, LIMIT'ы, PAGE_SIZE, задержка и т.п.
+│  ├─ data.ts                   # пулы: города, имена; тип City
+│  └─ menu.ts                   # элементы меню (иконка/роут/название)
+├─ layouts/
+│  └─ default.vue               # AppBar + Sidebar + контейнер
+├─ pages/
+│  ├─ index.vue                 # мини-дашборд
+│  ├─ users/
+│  │  ├─ index.vue              # список пользователей
+│  │  └─ _id.vue                # детали пользователя
+│  ├─ shops/index.vue           # заглушка
+│  ├─ machines/index.vue        # заглушка
+│  ├─ partners/index.vue        # заглушка
+│  ├─ staff/index.vue           # заглушка
+│  ├─ drinks/index.vue          # заглушка
+│  ├─ passes/index.vue          # заглушка
+│  └─ passes/active.vue         # заглушка
+├─ plugins/
+│  └─ api.ts                    # фабрика пользователей (имитация API)
+├─ static/
+│  └─ favicon.svg               # лаконичная иконка чашки #FFD166
+├─ store/
+│  ├─ users.ts                  # список/города/прогресс загрузки (кэш)
+│  └─ ui.ts                     # состояние мобильного drawer'а
+├─ nuxt.config.ts
+├─ vue-shim.d.ts                # типы для *.vue
+└─ tsconfig.json
+```
 
-### `layouts`
+---
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+## 🎨 Дизайн-детали
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+- Адаптив:
+  - ≥ **md**: поиск и фильтр в строку 50/50; чипы — над селектом (правый столбец);
+  - **< md**: поля в столбик; чипы — под поиском, над фильтром.
+- **Пагинация**: компактная, активная страница — в акцентных цветах, стрелки слева/справа.
+- **Карточки**: тёмно-серый фон в тёмной теме, светлая карточка в светлой, небольшие радиусы/отступы, читаемая типографика.
+- Кнопка «Детали»: **акцентная обводка**, ненавязчивый CTA.
 
-### `pages`
+---
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+## 🔎 Поиск и фильтрация
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+- Поиск регистронезависимый, поддерживает ввод телефона с/без пробелов/дефисов.
+- Фильтрация по нескольким городам; в UI видно, сколько выбрано.
+- При смене поискового запроса/города — сбрасывается на **1-ю страницу**.
 
-### `plugins`
+---
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+## ⚙️ Как устроена загрузка данных
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+- `plugins/api.ts` эмулирует бэкенд:
+  - `users.list({ offset, limit })` генерирует пользователей детерминированно по индексу,
+  - выдерживает **NETWORK_OVERHEAD_MS = 500** мс между запросами,
+  - первые `100`, затем пачками до `500`, пока не будет **TOTAL = 8000**.
+- Во время загрузки показываем **skeleton** + **progress** «Загружено: X из TOTAL».
+- Список и города **кэшируются** в `store/users` и переиспользуются.
 
-### `static`
+---
 
-This directory contains your static files. Each file inside this directory is mapped to `/`.
+## 🧪 Качество и удобство
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+- **TypeScript** (строгий режим), **eslint**.
+- Нормализованный ввод для телефона в поиске.
+- Доступность:
+  - контраст в обеих темах,
+  - кнопки/чипы с понятными hit-area,
+  - семантичные элементы Vuetify.
+- Производительность:
+  - клиентская пагинация, лёгкий рендер списка (50 элементов),
+  - кэширование в store, отсутствие повторных запросов.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+---
 
-### `store`
+## 🔧 Настройка/кастомизация
 
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+- **Цвета/шрифты** — `assets/scss/main.scss` + `nuxt.config.ts > vuetify.theme`.
+- **Константы** — `constants/users.ts` (TOTAL, LIMIT, PAGE_SIZE, задержка),
+  города/имена — `constants/data.ts`.
+- **Меню** — `constants/menu.ts`.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+---
+
+## 📌 Что можно улучшить при желании
+
+- Виртуальный список (virtual scroll) для очень длинных выборок.
+- Тесты (unit/e2e), Storybook для UI.
+- i18n (ru/en), форматирование дат/валют.
+- API-слой с реальным бэкендом и SSR-fetch на сервере.
+- Nuxt 3 + Vue 3 (Composition API) при миграции.
+
+---
+
+## 📄 Лицензия
+
+MIT — можно использовать код как основу для своих проектов.
+
+---
+
+## 🧭 Навигация по коду (быстрые ссылки)
+
+- Список: `pages/users/index.vue`  
+- Детали: `pages/users/_id.vue`  
+- Toolbar: `components/UsersToolbar.vue`  
+- Карточка: `components/UserItem.vue`  
+- Сайдбар: `components/AppSidebar.vue`  
+- API-фабрика: `plugins/api.ts`  
+- Стили/токены: `assets/scss/main.scss`  

@@ -17,6 +17,14 @@
     },
     "types": ["@nuxt/types", "@types/node", "@nuxtjs/vuetify"]
   },
-  "include": ["**/*", "types/**/*.d.ts"],
+  "include": [
+    "components/**/*.vue",
+    "layouts/**/*.vue",
+    "pages/**/*.vue",
+    "plugins/**/*.ts",
+    "store/**/*.ts",
+    "nuxt.config.ts",
+    "vue-shim.d.ts"
+  ],
   "exclude": ["node_modules", ".nuxt", "dist"]
 }
