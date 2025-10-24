@@ -1,8 +1,17 @@
 <template>
-  <button class="theme-toggle" :class="{ dark }" @click="toggle" aria-label="Переключить тему">
-    <span class="track"></span>
-    <span class="thumb">
-      <!-- в dark показываем солнце, в light — луну -->
+  <button
+    class="theme-toggle"
+    :class="{ dark }"
+    :aria-checked="String(dark)"
+    role="switch"
+    aria-label="Переключить тему"
+    title="Переключить тему"
+    @click="toggle"
+    @keydown.space.prevent="toggle"
+    @keydown.enter.prevent="toggle"
+  >
+    <span class="track" aria-hidden="true"></span>
+    <span class="thumb" aria-hidden="true">
       <v-icon v-if="dark" small>mdi-white-balance-sunny</v-icon>
       <v-icon v-else small>mdi-moon-waning-crescent</v-icon>
     </span>
@@ -17,21 +26,30 @@ export default {
   },
   methods: {
     toggle () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      try { localStorage.setItem('themeDark', String(this.$vuetify.theme.dark)) } catch (_) {}
+      const next = !this.$vuetify.theme.dark
+      this.$vuetify.theme.dark = next
+      try { localStorage.setItem('themeDark', String(next)) } catch (_) {}
     }
   },
   mounted () {
     try {
       const saved = localStorage.getItem('themeDark')
-      if (saved != null) this.$vuetify.theme.dark = saved === 'true'
+      if (saved != null) {
+        this.$vuetify.theme.dark = saved === 'true'
+        return
+      }
     } catch (_) {}
+
+    if (process.client && window.matchMedia) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      this.$vuetify.theme.dark = !!prefersDark
+    }
   }
 }
 </script>
 
 <style scoped>
-/* общий контейнер тумблера */
+/* размеры и клик-зона */
 .theme-toggle {
   position: relative;
   width: 64px;
@@ -41,6 +59,12 @@ export default {
   background: transparent;
   cursor: pointer;
   outline: none;
+  border-radius: 999px;
+  transition: box-shadow var(--dur-2, 240ms) var(--ease, ease);
+}
+
+.theme-toggle:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-accent);
 }
 
 /* ===== ТРЕК ===== */
@@ -50,6 +74,9 @@ export default {
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(230,230,230,.95));
   box-shadow: inset 0 2px 6px rgba(0,0,0,.15);
+  transition:
+    background-color var(--dur-2, 240ms) var(--ease, ease),
+    box-shadow var(--dur-2, 240ms) var(--ease, ease);
 }
 
 .theme-toggle.dark .track {
@@ -70,7 +97,13 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: left .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+  transition:
+    left var(--dur-2, 240ms) var(--ease, ease),
+    transform var(--dur-1, 140ms) var(--ease, ease),
+    background-color var(--dur-2, 240ms) var(--ease, ease),
+    box-shadow var(--dur-2, 240ms) var(--ease, ease),
+    color var(--dur-2, 240ms) var(--ease, ease);
+  will-change: left, transform, box-shadow;
 }
 
 .theme-toggle:not(.dark) .thumb {
@@ -79,9 +112,7 @@ export default {
   color: #000;
   box-shadow: 0 3px 10px rgba(0,0,0,.25);
 }
-.theme-toggle:not(.dark) .thumb :deep(.v-icon) {
-  font-size: 18px;
-}
+.theme-toggle:not(.dark) .thumb :deep(.v-icon) { font-size: 18px; }
 
 .theme-toggle.dark .thumb {
   left: 6px;
@@ -89,13 +120,12 @@ export default {
   color: #ffffff;
   box-shadow: none;
 }
-.theme-toggle.dark .thumb :deep(.v-icon) {
-  font-size: 20px;
-}
+.theme-toggle.dark .thumb :deep(.v-icon) { font-size: 20px; }
 
-/* ховер */
-.theme-toggle:hover .thumb {
-  box-shadow: 0 4px 12px rgba(0,0,0,.3);
-}
+.theme-toggle:hover .thumb { box-shadow: 0 4px 12px rgba(0,0,0,.3); }
 .theme-toggle.dark:hover .thumb { box-shadow: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle, .theme-toggle * { transition: none !important; }
+}
 </style>
