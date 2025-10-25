@@ -1,32 +1,25 @@
 <template>
   <div class="users-toolbar">
-    <v-row no-gutters class="d-none d-md-flex mb-2">
-      <v-col md="6" offset-md="6" class="pl-md-3">
-        <div class="chips-row">
-          <template v-if="selectedList.length">
-            <v-chip
-              v-for="c in firstChips"
-              :key="c.id"
-              small
-              close
-              class="chip"
-              @click:close="removeCity(c.id)"
-              :aria-label="`Убрать город: ${c.title}`"
-            >
-              {{ c.title }}
-            </v-chip>
-            <v-chip
-              v-if="restCount > 0"
-              small
-              outlined
-              class="chip chip-muted"
-              :ripple="false"
-              :tabindex="-1"
-            >
-              + ещё {{ restCount }}
-            </v-chip>
+    <v-row no-gutters class="mb-1">
+      <v-col cols="12" md="6" class="pr-md-2">
+        <div class="caption">
+          <template v-if="hasTotals">
+            Найдено: <strong>{{ total }}</strong>
+            <template v-if="hasPages">
+              · Страница {{ page }} из {{ pages }}
+            </template>
           </template>
-          <span v-else class="caption chips-placeholder">Города не выбраны</span>
+          <template v-else>&nbsp;</template>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6" class="pl-md-2 mt-1 mt-md-0">
+        <div class="caption">
+          <template v-if="selectedList.length === 0">
+            Города не выбраны
+          </template>
+          <template v-else>
+            Выбрано городов: <strong>{{ selectedList.length }}</strong>
+          </template>
         </div>
       </v-col>
     </v-row>
@@ -110,10 +103,15 @@ export default Vue.extend({
   props: {
     cities: { type: Array as () => City[], required: true },
     valueSearch: { type: String, default: '' },
-    valueCities: { type: Array as () => string[], default: () => [] }
+    valueCities: { type: Array as () => string[], default: () => [] },
+    total:        { type: Number,  default: null },
+    page:         { type: Number,  default: 1 },
+    pages:        { type: Number,  default: 1 }
   },
 
   computed: {
+    hasTotals(): boolean { return this.total !== null && this.total !== undefined },
+    hasPages(): boolean  { return !!this.pages && !!this.page },
     searchProxy: {
       get(): string {
         return (this as any).valueSearch

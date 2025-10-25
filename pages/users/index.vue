@@ -32,12 +32,12 @@
             :cities="cityList"
             :value-search="search"
             :value-cities="selectedCities"
+            :total="filteredUsers.length"
+            :page="page"
+            :pages="pageCount"
             @update:search="search = $event"
             @update:cities="selectedCities = $event"
           />
-          <div class="caption mt-1">
-            Найдено: <strong>{{ filteredUsers.length }}</strong> · Страница {{ page }} из {{ pageCount }}
-          </div>
         </v-card>
         <div class="users-list">
           <user-item
