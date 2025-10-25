@@ -18,13 +18,10 @@
     "types": ["@nuxt/types", "@types/node", "@nuxtjs/vuetify"]
   },
   "include": [
-    "components/**/*.vue",
-    "layouts/**/*.vue",
-    "pages/**/*.vue",
-    "plugins/**/*.ts",
-    "store/**/*.ts",
-    "nuxt.config.ts",
-    "vue-shim.d.ts"
+    "**/*.ts",
+    "types/**/*.d.ts",
+    "**/*.vue",
+    "nuxt.config.ts"
   ],
   "exclude": ["node_modules", ".nuxt", "dist"]
 }
