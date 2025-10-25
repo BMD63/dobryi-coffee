@@ -22,16 +22,20 @@
 export default {
   name: 'ThemeToggle',
   computed: {
-    dark () { return this.$vuetify.theme.dark }
+    dark() {
+      return this.$vuetify.theme.dark
+    },
   },
   methods: {
-    toggle () {
+    toggle() {
       const next = !this.$vuetify.theme.dark
       this.$vuetify.theme.dark = next
-      try { localStorage.setItem('themeDark', String(next)) } catch (_) {}
-    }
+      try {
+        localStorage.setItem('themeDark', String(next))
+      } catch (_) {}
+    },
   },
-  mounted () {
+  mounted() {
     try {
       const saved = localStorage.getItem('themeDark')
       if (saved != null) {
@@ -40,11 +44,16 @@ export default {
       }
     } catch (_) {}
 
-    if (process.client && window.matchMedia) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function'
+    ) {
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches
       this.$vuetify.theme.dark = !!prefersDark
     }
-  }
+  },
 }
 </script>
 
@@ -72,18 +81,20 @@ export default {
   position: absolute;
   inset: 0;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(230,230,230,.95));
-  box-shadow: inset 0 2px 6px rgba(0,0,0,.15);
-  transition:
-    background-color var(--dur-2, 240ms) var(--ease, ease),
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(230, 230, 230, 0.95)
+  );
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color var(--dur-2, 240ms) var(--ease, ease),
     box-shadow var(--dur-2, 240ms) var(--ease, ease);
 }
 
 .theme-toggle.dark .track {
   background: linear-gradient(180deg, #343441, #2a2a34);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    inset 0 10px 18px rgba(0,0,0,.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 10px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* ===== БЕГУНОК ===== */
@@ -97,8 +108,7 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition:
-    left var(--dur-2, 240ms) var(--ease, ease),
+  transition: left var(--dur-2, 240ms) var(--ease, ease),
     transform var(--dur-1, 140ms) var(--ease, ease),
     background-color var(--dur-2, 240ms) var(--ease, ease),
     box-shadow var(--dur-2, 240ms) var(--ease, ease),
@@ -110,9 +120,11 @@ export default {
   left: calc(100% - 28px - 4px);
   background: #ffffff;
   color: #000;
-  box-shadow: 0 3px 10px rgba(0,0,0,.25);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 }
-.theme-toggle:not(.dark) .thumb :deep(.v-icon) { font-size: 18px; }
+.theme-toggle:not(.dark) .thumb :deep(.v-icon) {
+  font-size: 18px;
+}
 
 .theme-toggle.dark .thumb {
   left: 6px;
@@ -120,12 +132,21 @@ export default {
   color: #ffffff;
   box-shadow: none;
 }
-.theme-toggle.dark .thumb :deep(.v-icon) { font-size: 20px; }
+.theme-toggle.dark .thumb :deep(.v-icon) {
+  font-size: 20px;
+}
 
-.theme-toggle:hover .thumb { box-shadow: 0 4px 12px rgba(0,0,0,.3); }
-.theme-toggle.dark:hover .thumb { box-shadow: none; }
+.theme-toggle:hover .thumb {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.theme-toggle.dark:hover .thumb {
+  box-shadow: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .theme-toggle, .theme-toggle * { transition: none !important; }
+  .theme-toggle,
+  .theme-toggle * {
+    transition: none !important;
+  }
 }
 </style>

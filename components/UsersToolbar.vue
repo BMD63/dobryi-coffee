@@ -117,7 +117,9 @@
           :menu-props="{ offsetY: true }"
         >
           <template #selection>
-            <span v-if="selectedList.length === 0" class="caption">Не выбрано</span>
+            <span v-if="selectedList.length === 0" class="caption"
+              >Не выбрано</span
+            >
           </template>
         </v-select>
       </v-col>
@@ -137,48 +139,66 @@ export default Vue.extend({
     valueSearch: { type: String, default: '' },
     valueCities: { type: Array as () => string[], default: () => [] },
     total: { type: Number, default: null },
-    page:  { type: Number, default: 1 },
-    pages: { type: Number, default: 1 }
+    page: { type: Number, default: 1 },
+    pages: { type: Number, default: 1 },
   },
 
   computed: {
-    hasTotals(): boolean { return this.total !== null && this.total !== undefined },
-    hasPages(): boolean { return !!this.pages && !!this.page },
+    hasTotals(): boolean {
+      return this.total !== null && this.total !== undefined
+    },
+    hasPages(): boolean {
+      return !!this.pages && !!this.page
+    },
 
     searchProxy: {
-      get(): string { return (this as any).valueSearch },
-      set(v: string) { (this as any).$emit('update:search', v) }
+      get(): string {
+        return (this as any).valueSearch
+      },
+      set(v: string) {
+        ;(this as any).$emit('update:search', v)
+      },
     },
 
     citiesProxy: {
-      get(): string[] { return (this as any).valueCities },
-      set(v: string[]) { (this as any).$emit('update:cities', v) }
+      get(): string[] {
+        return (this as any).valueCities
+      },
+      set(v: string[]) {
+        ;(this as any).$emit('update:cities', v)
+      },
     },
 
     selectedList(): City[] {
       const chosen = new Set((this as any).valueCities as string[])
-      return ((this as any).cities as City[]).filter(c => chosen.has(c.id))
+      return ((this as any).cities as City[]).filter((c) => chosen.has(c.id))
     },
 
-    firstChips(): City[] { return (this as any).selectedList.slice(0, 3) },
+    firstChips(): City[] {
+      return (this as any).selectedList.slice(0, 3)
+    },
 
     restCount(): number {
       const total = ((this as any).selectedList as City[]).length
       return Math.max(0, total - 3)
-    }
+    },
   },
 
   methods: {
     removeCity(id: string) {
-      const next = ((this as any).valueCities as string[]).filter(x => x !== id)
+      const next = ((this as any).valueCities as string[]).filter(
+        (x) => x !== id
+      )
       ;(this as any).$emit('update:cities', next)
-    }
-  }
+    },
+  },
 })
 </script>
 
 <style scoped>
-.field { width: 100%; }
+.field {
+  width: 100%;
+}
 
 /* Чипы */
 .chips-row {
@@ -188,6 +208,11 @@ export default Vue.extend({
   flex-wrap: wrap;
   gap: 6px;
 }
-.chips-row .chip { border-radius: 12px; }
-.chips-row .chip-muted { pointer-events: none; opacity: .85; }
+.chips-row .chip {
+  border-radius: 12px;
+}
+.chips-row .chip-muted {
+  pointer-events: none;
+  opacity: 0.85;
+}
 </style>

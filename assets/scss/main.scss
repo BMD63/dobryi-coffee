@@ -2,17 +2,17 @@
    Design tokens (light)
    ========================= */
 :root {
-  --color-primary:   #FFFFFF;
-  --color-secondary: #EEEEEE;
-  --color-accent:    #FFD166;
-  --color-text:      #000000;
-  --color-caption:   #787878;
+  --color-primary: #ffffff;
+  --color-secondary: #eeeeee;
+  --color-accent: #ffd166;
+  --color-text: #000000;
+  --color-caption: #787878;
 
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
 
-  --ease: cubic-bezier(.2,.8,.2,1);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --dur-1: 140ms;
   --dur-2: 240ms;
 }
@@ -20,10 +20,15 @@
 /* =========================
    Base
    ========================= */
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 
 body {
-  font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: 14px;
   line-height: 16px;
   color: var(--color-text);
@@ -34,27 +39,57 @@ body {
 
 /* dark theme surface/text */
 .theme--dark body {
-  color: #FFFFFF;
+  color: #ffffff;
   background: #121212;
 }
 
-.h1      { font-size: 24px; line-height: 28px; font-weight: 700; }
-.body    { font-size: 14px; line-height: 16px; font-weight: 400; }
-.caption { font-size: 10px; line-height: 12px; font-weight: 400; color: var(--color-caption); }
-.theme--dark .caption { color: rgba(255,255,255,.70); }
+.h1 {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+}
+.body {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+}
+.caption {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  color: var(--color-caption);
+}
+.theme--dark .caption {
+  color: rgba(255, 255, 255, 0.7);
+}
 
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 
-:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
 
 /* =========================
    Layout
    ========================= */
-.app-main { overflow-x: hidden; }
-.app-container { max-width: 100% !important; }
+.app-main {
+  overflow-x: hidden;
+}
+.app-container {
+  max-width: 100% !important;
+}
 @media (min-width: 960px) {
-  .app-container { max-width: 1280px !important; margin: 0 auto; }
+  .app-container {
+    max-width: 1280px !important;
+    margin: 0 auto;
+  }
 }
 
 /* =========================
@@ -62,11 +97,17 @@ a:hover { text-decoration: underline; }
    ========================= */
 .visually-hidden {
   position: absolute !important;
-  height: 1px; width: 1px; overflow: hidden;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap;
 }
-.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* =========================
    Buttons
@@ -85,21 +126,25 @@ a:hover { text-decoration: underline; }
 
 /* readable text on outlined accent button */
 .theme--light .btn-accent-outlined,
-.theme--light .btn-accent-outlined :deep(.v-btn__content) { color: #000 !important; }
-.theme--dark  .btn-accent-outlined,
-.theme--dark  .btn-accent-outlined :deep(.v-btn__content) { color: #fff !important; }
+.theme--light .btn-accent-outlined :deep(.v-btn__content) {
+  color: #000 !important;
+}
+.theme--dark .btn-accent-outlined,
+.theme--dark .btn-accent-outlined :deep(.v-btn__content) {
+  color: #fff !important;
+}
 
 * {
-  transition:
-    background-color var(--dur-2) var(--ease),
-    border-color      var(--dur-2) var(--ease),
-    color             var(--dur-2) var(--ease),
-    box-shadow        var(--dur-2) var(--ease),
-    transform         var(--dur-1) var(--ease);
+  transition: background-color var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease),
+    box-shadow var(--dur-2) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 /* карточки пользователей и общие .user-card */
@@ -110,36 +155,50 @@ a:hover { text-decoration: underline; }
 .users-page .v-list .v-list-item:hover,
 .user-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,.18);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 .theme--light .users-page .v-list .v-list-item:hover,
 .theme--light .user-card:hover {
-  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* элементы сайдбара */
-.nav-item { transform: translateX(0); }
+.nav-item {
+  transform: translateX(0);
+}
 .nav-item:hover {
   transform: translateX(2px);
-  box-shadow: 0 2px 10px rgba(0,0,0,.14);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
 }
-.theme--light .nav-item:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.theme--light .nav-item:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
 
 /* кнопки (в т.ч. «Детали») */
-.v-btn, .btn-ghost-accent { transform: translateY(0); }
-.v-btn:hover, .btn-ghost-accent:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,.16);
+.v-btn,
+.btn-ghost-accent {
+  transform: translateY(0);
 }
-.v-btn:active, .btn-ghost-accent:active { transform: translateY(0); box-shadow: none; }
+.v-btn:hover,
+.btn-ghost-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+.v-btn:active,
+.btn-ghost-accent:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
 
 /* пагинация */
 .pagination--compact .v-pagination__item,
-.pagination--compact .v-pagination__navigation { will-change: transform, box-shadow; }
+.pagination--compact .v-pagination__navigation {
+  will-change: transform, box-shadow;
+}
 .pagination--compact .v-pagination__item:hover,
 .pagination--compact .v-pagination__navigation:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(0,0,0,.18);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
 }
 .pagination--compact .v-pagination__item:focus-visible,
 .pagination--compact .v-pagination__navigation:focus-visible {

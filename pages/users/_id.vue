@@ -22,15 +22,32 @@
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
               <div class="section-title mb-3">
-                <v-icon class="section-icon" aria-hidden="true">mdi-account-circle-outline</v-icon>
+                <v-icon class="section-icon" aria-hidden="true"
+                  >mdi-account-circle-outline</v-icon
+                >
                 <span>Основное</span>
               </div>
 
-              <div class="row-item"><span class="label">Имя</span><span class="value">{{ user.name }}</span></div>
-              <div class="row-item"><span class="label">Телефон</span><span class="value">{{ user.phone }}</span></div>
-              <div class="row-item"><span class="label">Город</span><span class="value">{{ user.city.title }}</span></div>
-              <div class="row-item"><span class="label">Роль</span><span class="value">{{ user.role }}</span></div>
-              <div class="row-item"><span class="label">Заблокирован</span><span class="value">{{ user.isBlocked ? 'Да' : 'Нет' }}</span></div>
+              <div class="row-item">
+                <span class="label">Имя</span
+                ><span class="value">{{ user.name }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Телефон</span
+                ><span class="value">{{ user.phone }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Город</span
+                ><span class="value">{{ user.city.title }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Роль</span
+                ><span class="value">{{ user.role }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Заблокирован</span
+                ><span class="value">{{ user.isBlocked ? 'Да' : 'Нет' }}</span>
+              </div>
             </v-card>
           </v-col>
 
@@ -38,14 +55,32 @@
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
               <div class="section-title mb-3">
-                <v-icon class="section-icon" aria-hidden="true">mdi-cash-multiple</v-icon>
+                <v-icon class="section-icon" aria-hidden="true"
+                  >mdi-cash-multiple</v-icon
+                >
                 <span>Финансы</span>
               </div>
 
-              <div class="row-item"><span class="label">Баланс</span><span class="value">{{ user.balance }} ₽</span></div>
-              <div class="row-item"><span class="label">Кэшбэк, %</span><span class="value">{{ user.cashbackPercent }}%</span></div>
-              <div class="row-item"><span class="label">Накоплено (всего / операций)</span><span class="value">{{ user.saveTotal }} ₽ / {{ user.saveCount }}</span></div>
-              <div class="row-item"><span class="label">Потрачено (всего / операций)</span><span class="value">{{ user.spendTotal }} ₽ / {{ user.spendCount }}</span></div>
+              <div class="row-item">
+                <span class="label">Баланс</span
+                ><span class="value">{{ user.balance }} ₽</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Кэшбэк, %</span
+                ><span class="value">{{ user.cashbackPercent }}%</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Накоплено (всего / операций)</span
+                ><span class="value"
+                  >{{ user.saveTotal }} ₽ / {{ user.saveCount }}</span
+                >
+              </div>
+              <div class="row-item">
+                <span class="label">Потрачено (всего / операций)</span
+                ><span class="value"
+                  >{{ user.spendTotal }} ₽ / {{ user.spendCount }}</span
+                >
+              </div>
             </v-card>
           </v-col>
 
@@ -53,15 +88,32 @@
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
               <div class="section-title mb-3">
-                <v-icon class="section-icon" aria-hidden="true">mdi-calendar-clock</v-icon>
+                <v-icon class="section-icon" aria-hidden="true"
+                  >mdi-calendar-clock</v-icon
+                >
                 <span>Даты</span>
               </div>
 
-              <div class="row-item"><span class="label">Создан</span><span class="value">{{ d(user.createdAt) }}</span></div>
-              <div class="row-item"><span class="label">Обновлён</span><span class="value">{{ d(user.updatedAt) }}</span></div>
-              <div class="row-item"><span class="label">Последний визит</span><span class="value">{{ d(user.lastVisit) }}</span></div>
-              <div class="row-item"><span class="label">Последнее пополнение</span><span class="value">{{ d(user.lastSave) }}</span></div>
-              <div class="row-item"><span class="label">Последняя покупка</span><span class="value">{{ d(user.lastSpend) }}</span></div>
+              <div class="row-item">
+                <span class="label">Создан</span
+                ><span class="value">{{ d(user.createdAt) }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Обновлён</span
+                ><span class="value">{{ d(user.updatedAt) }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Последний визит</span
+                ><span class="value">{{ d(user.lastVisit) }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Последнее пополнение</span
+                ><span class="value">{{ d(user.lastSave) }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Последняя покупка</span
+                ><span class="value">{{ d(user.lastSpend) }}</span>
+              </div>
             </v-card>
           </v-col>
 
@@ -69,12 +121,20 @@
           <v-col cols="12" md="6">
             <v-card class="user-card pa-4">
               <div class="section-title mb-3">
-                <v-icon class="section-icon" aria-hidden="true">mdi-cog-outline</v-icon>
+                <v-icon class="section-icon" aria-hidden="true"
+                  >mdi-cog-outline</v-icon
+                >
                 <span>Служебное</span>
               </div>
 
-              <div class="row-item"><span class="label">ID</span><span class="value mono">{{ user.id }}</span></div>
-              <div class="row-item"><span class="label">Город (ID)</span><span class="value mono">{{ user.city.id }}</span></div>
+              <div class="row-item">
+                <span class="label">ID</span
+                ><span class="value mono">{{ user.id }}</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Город (ID)</span
+                ><span class="value mono">{{ user.city.id }}</span>
+              </div>
             </v-card>
           </v-col>
         </v-row>
@@ -93,15 +153,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { User } from '~/plugins/api'
-import { USERS_TOTAL, USERS_FIRST_LIMIT, USERS_MAX_LIMIT } from '~/constants/users'
+import {
+  USERS_TOTAL,
+  USERS_FIRST_LIMIT,
+  USERS_MAX_LIMIT,
+} from '~/constants/users'
 
 export default defineComponent({
   name: 'UserDetailsPage',
-  data () {
+  data() {
     return { user: null as User | null }
   },
   fetchOnServer: false,
-  async fetch () {
+  async fetch() {
     const id = this.$route.params.id
     if (!id) return
 
@@ -113,7 +177,10 @@ export default defineComponent({
 
     let offset = 0
     {
-      const { items } = await (this as any).$api.users.list({ offset, limit: USERS_FIRST_LIMIT })
+      const { items } = await (this as any).$api.users.list({
+        offset,
+        limit: USERS_FIRST_LIMIT,
+      })
       this.user = items.find((u: User) => u.id === id) || null
       if (this.user) return
       offset += items.length
@@ -126,15 +193,23 @@ export default defineComponent({
     }
   },
   methods: {
-    d (ts: number) {
-      try { return new Date(ts).toLocaleDateString() } catch { return '-' }
-    }
-  }
+    d(ts: number) {
+      try {
+        return new Date(ts).toLocaleDateString()
+      } catch {
+        return '-'
+      }
+    },
+  },
 })
 </script>
 
 <style scoped>
-.user-details .h2 { font-size: 16px; line-height: 20px; font-weight: 700; }
+.user-details .h2 {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
 
 /* Заголовки секций с иконкой */
 .section-title {
@@ -147,18 +222,18 @@ export default defineComponent({
 }
 .section-icon {
   font-size: 18px;
-  opacity: .9;
+  opacity: 0.9;
 }
 
 /* Карточка */
 .user-card {
   border-radius: 10px;
   background: #1b1b1b;
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 .theme--light .user-card {
   background: #fff;
-  border-color: rgba(0,0,0,.08);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Ряд "метка — значение" */
@@ -167,16 +242,35 @@ export default defineComponent({
   grid-template-columns: 1fr;
   gap: 6px;
   padding: 8px 0;
-  border-bottom: 1px dashed rgba(255,255,255,.07);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
 }
-.theme--light .row-item { border-bottom-color: rgba(0,0,0,.08); }
-.row-item:last-child { border-bottom: 0; }
+.theme--light .row-item {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+.row-item:last-child {
+  border-bottom: 0;
+}
 
-.label { font-size: 12px; line-height: 14px; opacity: .7; }
-.value { font-size: 14px; line-height: 18px; font-weight: 700; }
-.mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+.label {
+  font-size: 12px;
+  line-height: 14px;
+  opacity: 0.7;
+}
+.value {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 700;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+}
 
 /* Кнопка назад отдельно от карточек */
-.back-wrap { display: flex; }
-.back-btn  { padding-left: 0; }
+.back-wrap {
+  display: flex;
+}
+.back-btn {
+  padding-left: 0;
+}
 </style>

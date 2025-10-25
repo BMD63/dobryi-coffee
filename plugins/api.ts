@@ -3,7 +3,7 @@ import { Plugin } from '@nuxt/types'
 import {
   USERS_TOTAL,
   USERS_MAX_LIMIT,
-  NETWORK_OVERHEAD_MS
+  NETWORK_OVERHEAD_MS,
 } from '~/constants/users'
 import { CITY_POOL, FIRST_NAMES } from '~/constants/data'
 import type { City } from '~/constants/data'
@@ -28,8 +28,14 @@ export type User = {
   createdAt: number
 }
 
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-const seeded = (n: number) => { const x = Math.sin(n + 1) * 10000; return x - Math.floor(x) }
+const delay = (ms: number) =>
+  new Promise<void>((_resolve) => {
+    setTimeout(() => _resolve(), ms)
+  })
+const seeded = (n: number) => {
+  const x = Math.sin(n + 1) * 10000
+  return x - Math.floor(x)
+}
 const pad2 = (n: number) => String(n).padStart(2, '0')
 
 function makeUser(i: number): User {
@@ -39,10 +45,14 @@ function makeUser(i: number): User {
   const baseTs = 1696497035090
 
   const phoneTail = 1000 + (i % 9000)
-  const phone = `+79*****${pad2(Math.floor(phoneTail / 100))}${String(phoneTail).slice(-2)}`
+  const phone = `+79*****${pad2(Math.floor(phoneTail / 100))}${String(
+    phoneTail
+  ).slice(-2)}`
 
   return {
-    id: `u${i.toString(16).padStart(5, '0')}${Math.floor(seeded(i) * 0xffff).toString(16).padStart(4, '0')}`,
+    id: `u${i.toString(16).padStart(5, '0')}${Math.floor(seeded(i) * 0xffff)
+      .toString(16)
+      .padStart(4, '0')}`,
     balance: Math.floor(r * 1000),
     cashbackPercent: 10,
     city,
@@ -63,7 +73,13 @@ function makeUser(i: number): User {
 }
 
 const apiPlugin: Plugin = (_ctx, inject) => {
-  async function list({ offset = 0, limit = 100 }: { offset?: number; limit?: number }) {
+  async function list({
+    offset = 0,
+    limit = 100,
+  }: {
+    offset?: number
+    limit?: number
+  }) {
     const safeLimit = Math.min(Math.max(limit, 1), USERS_MAX_LIMIT)
     const end = Math.min(offset + safeLimit, USERS_TOTAL)
 

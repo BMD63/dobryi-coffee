@@ -20,16 +20,32 @@ export default {
   name: 'PageStub',
   props: {
     title: { type: String, required: true },
-    icon:  { type: String, default: 'mdi-information-outline' },
-    subtitle: { type: String, default: '' }
-  }
+    icon: { type: String, default: 'mdi-information-outline' },
+    subtitle: { type: String, default: '' },
+  },
 }
 </script>
 
 <style scoped>
-.hero { border-radius: 12px; border: 1px solid rgba(255,255,255,.06); background:#202020; }
-.theme--light .hero { background:#F5F5F5; border-color: rgba(0,0,0,.08); }
-.hero-content { padding: 20px 24px; }
-.h1 { font-weight: 700; font-size: 20px; line-height: 1.2; margin: 0 0 4px; }
-.subtitle { opacity: .8; }
+.hero {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #202020;
+}
+.theme--light .hero {
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.hero-content {
+  padding: 20px 24px;
+}
+.h1 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+.subtitle {
+  opacity: 0.8;
+}
 </style>

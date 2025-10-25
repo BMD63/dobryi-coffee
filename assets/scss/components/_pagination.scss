@@ -8,7 +8,8 @@
   border-radius: 6px;
   box-shadow: none !important;
   border: 1px solid;
-  transition: background-color .12s ease, color .12s ease, border-color .12s ease;
+  transition: background-color 0.12s ease, color 0.12s ease,
+    border-color 0.12s ease;
 }
 
 /* Иконки стрелок */
@@ -20,15 +21,15 @@
 .theme--light .pagination--compact .v-pagination__navigation,
 .theme--light .pagination--compact .v-pagination__item {
   background: #fff !important;
-  border-color: rgba(0,0,0,.12) !important;
-  color: rgba(0,0,0,.87) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .theme--dark .pagination--compact .v-pagination__navigation,
 .theme--dark .pagination--compact .v-pagination__item {
-  background: #1E1E1E !important;
-  border-color: rgba(255,255,255,.12) !important;
-  color: rgba(255,255,255,.87) !important;
+  background: #1e1e1e !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(255, 255, 255, 0.87) !important;
 }
 
 .pagination--compact .v-pagination__item.v-pagination__item--active,
@@ -36,11 +37,13 @@
   background-color: var(--color-accent) !important;
   border-color: var(--color-accent) !important;
   color: #000 !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,.12) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
 }
 
 .pagination-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-.pagination-wrapper .v-pagination { flex-wrap: nowrap; }
+.pagination-wrapper .v-pagination {
+  flex-wrap: nowrap;
+}

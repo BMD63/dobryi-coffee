@@ -17,11 +17,6 @@
     },
     "types": ["@nuxt/types", "@types/node", "@nuxtjs/vuetify"]
   },
-  "include": [
-    "**/*.ts",
-    "types/**/*.d.ts",
-    "**/*.vue",
-    "nuxt.config.ts"
-  ],
+  "include": ["**/*.ts", "types/**/*.d.ts", "**/*.vue", "nuxt.config.ts"],
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

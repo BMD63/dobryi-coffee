@@ -22,7 +22,9 @@
           striped
           class="mt-4"
         />
-        <div class="caption mt-1">Загружено: {{ loaded }} из {{ totalAll }}</div>
+        <div class="caption mt-1">
+          Загружено: {{ loaded }} из {{ totalAll }}
+        </div>
       </div>
 
       <div v-else>
@@ -84,31 +86,32 @@ import {
   USERS_TOTAL,
   USERS_FIRST_LIMIT,
   USERS_MAX_LIMIT,
-  PAGE_SIZE
+  PAGE_SIZE,
 } from '~/constants/users'
 
 export default defineComponent({
   name: 'UsersPage',
   components: { UsersToolbar, UserItem },
-  data () {
+  data() {
     return {
       users: [] as User[],
       loaded: 0,
       search: '',
       selectedCities: [] as string[],
       cityList: [] as Array<{ id: string; title: string }>,
-      page: 1
+      page: 1,
     }
   },
   fetchOnServer: false,
-  async fetch () {
+  async fetch() {
     const cached = (this.$store.state as any).users
     if (cached && cached.list && cached.list.length) {
       this.users = cached.list
       this.loaded = cached.loaded
-      this.cityList = cached.cities && cached.cities.length
-        ? cached.cities
-        : (this as any).$api.getCityList()
+      this.cityList =
+        cached.cities && cached.cities.length
+          ? cached.cities
+          : (this as any).$api.getCityList()
       if (!cached.cities || !cached.cities.length) {
         this.$store.commit('users/setCities', this.cityList)
       }
@@ -117,7 +120,10 @@ export default defineComponent({
 
     // первая порция 100
     {
-      const { items } = await (this as any).$api.users.list({ offset: 0, limit: USERS_FIRST_LIMIT })
+      const { items } = await (this as any).$api.users.list({
+        offset: 0,
+        limit: USERS_FIRST_LIMIT,
+      })
       this.users.push(...items)
       this.loaded = this.users.length
     }
@@ -138,8 +144,10 @@ export default defineComponent({
     this.$store.commit('users/setCities', this.cityList)
   },
   computed: {
-    totalAll (): number { return USERS_TOTAL },
-    filteredUsers (): User[] {
+    totalAll(): number {
+      return USERS_TOTAL
+    },
+    filteredUsers(): User[] {
       const q = this.search.trim().toLowerCase()
       const selected = new Set(this.selectedCities)
       const norm = (s: string) => s.replace(/[\s-]/g, '')
@@ -152,22 +160,31 @@ export default defineComponent({
         return byQuery && byCity
       })
     },
-    pageCount (): number {
+    pageCount(): number {
       return Math.max(1, Math.ceil(this.filteredUsers.length / PAGE_SIZE))
     },
-    paginated (): User[] {
+    paginated(): User[] {
       const start = (this.page - 1) * PAGE_SIZE
       return this.filteredUsers.slice(start, start + PAGE_SIZE)
-    }
+    },
   },
   watch: {
-    search () { this.page = 1 },
-    selectedCities () { this.page = 1 }
+    search() {
+      this.page = 1
+    },
+    selectedCities() {
+      this.page = 1
+    },
   },
   methods: {
-    formatDate (ts: number) { return new Date(ts).toLocaleDateString() },
-    onCityClick (cityId: string) { this.selectedCities = [cityId]; this.page = 1 }
-  }
+    formatDate(ts: number) {
+      return new Date(ts).toLocaleDateString()
+    },
+    onCityClick(cityId: string) {
+      this.selectedCities = [cityId]
+      this.page = 1
+    },
+  },
 })
 </script>
 
@@ -181,16 +198,17 @@ export default defineComponent({
   border-radius: 6px;
   padding: 12px;
   background: #1b1b1b;
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 :deep(.theme--light) .user-skel {
   background: #ffffff;
-  border-color: rgba(0,0,0,.08);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 600px) {
-  .users-list { grid-gap: 8px; }
+  .users-list {
+    grid-gap: 8px;
+  }
 }
 </style>
-
