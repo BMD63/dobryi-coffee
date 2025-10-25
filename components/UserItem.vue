@@ -174,13 +174,43 @@ export default {
 
 /* ===== Кнопка «Детали» ===== */
 .btn-details {
-  border-color: #ffd166 !important;
-  color: #ffd166 !important;
   background: transparent !important;
   box-shadow: none !important;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
+
 .btn-details :deep(.v-btn__content) {
-  color: #ffd166 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme--dark .btn-details {
+  background: transparent !important;
+  border: 1.5px solid #FFD166 !important;
+  color: #FFD166 !important;
+}
+.theme--dark .btn-details:hover {
+  background: rgba(255, 209, 102, .12) !important;
+}
+
+.theme--dark .btn-details :deep(.v-btn__content) { color: #FFD166 !important; }
+
+.theme--light .btn-details {
+  background: transparent !important;
+  border: 1.5px solid #000 !important;
+  color: #000 !important;
+}
+.theme--light .btn-details:hover {
+  background: rgba(0, 0, 0, .05) !important;
+}
+.theme--light .btn-details:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0,0,0,.15) !important;
 }
 
 /* компактная xs-версия */

@@ -195,20 +195,27 @@ export default defineComponent({
 }
 
 .user-skel {
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 12px;
-  background: #1b1b1b;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
 }
 
-:deep(.theme--light) .user-skel {
+/* Светлая тема */
+.theme--light .user-skel {
   background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0,0,0,.08);
+}
+
+/* Тёмная тема */
+.theme--dark .user-skel {
+  background: #1b1b1b;
+  border-color: rgba(255,255,255,.08);
+}
+.theme--dark .user-skel :deep(.v-skeleton-loader__bone) {
+  background: rgba(255,255,255,.10);
 }
 
 @media (max-width: 600px) {
-  .users-list {
-    grid-gap: 8px;
-  }
+  .users-list { grid-gap: 8px; }
 }
 </style>
