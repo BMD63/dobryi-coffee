@@ -203,19 +203,21 @@ export default defineComponent({
 /* Светлая тема */
 .theme--light .user-skel {
   background: #ffffff;
-  border-color: rgba(0,0,0,.08);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Тёмная тема */
 .theme--dark .user-skel {
   background: #1b1b1b;
-  border-color: rgba(255,255,255,.08);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 .theme--dark .user-skel :deep(.v-skeleton-loader__bone) {
-  background: rgba(255,255,255,.10);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 600px) {
-  .users-list { grid-gap: 8px; }
+  .users-list {
+    grid-gap: 8px;
+  }
 }
 </style>

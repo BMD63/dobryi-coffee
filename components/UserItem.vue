@@ -87,12 +87,30 @@ export default {
 </script>
 
 <style scoped>
+.theme--light {
+  --card-bg: #f4f4f4;
+}
+.theme--dark {
+  --card-bg: #1e1e1e;
+}
+
+/* ===== Карточка ===== */
 .user-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--card-bg);
+  border-radius: 8px;
+
   overflow: hidden;
 }
-.theme--light .user-item {
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+
+.user-item :deep(.v-list-item)::before,
+.user-item :deep(.v-list-item)::after {
+  content: none;
+  display: none;
+}
+
+.user-item :deep(.v-list-item__content) {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 /* Шапка */
@@ -124,7 +142,6 @@ export default {
 .user-phone {
   opacity: 0.85;
 }
-
 .user-item__actions {
   flex: 0 1 auto;
   min-width: 0;
@@ -159,73 +176,16 @@ export default {
   margin-top: 6px;
   opacity: 0.9;
 }
-.city-link {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  color: inherit;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.city-link:hover {
-  opacity: 0.9;
-}
 
-/* ===== Кнопка «Детали» ===== */
-.btn-details {
-  background: transparent !important;
-  box-shadow: none !important;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
-}
-
-.btn-details :deep(.v-btn__content) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.theme--dark .btn-details {
-  background: transparent !important;
-  border: 1.5px solid #FFD166 !important;
-  color: #FFD166 !important;
-}
-.theme--dark .btn-details:hover {
-  background: rgba(255, 209, 102, .12) !important;
-}
-
-.theme--dark .btn-details :deep(.v-btn__content) { color: #FFD166 !important; }
-
-.theme--light .btn-details {
-  background: transparent !important;
-  border: 1.5px solid #000 !important;
-  color: #000 !important;
-}
-.theme--light .btn-details:hover {
-  background: rgba(0, 0, 0, .05) !important;
-}
-.theme--light .btn-details:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,0,0,.15) !important;
-}
-
-/* компактная xs-версия */
+/* Кнопка «Детали» */
 .btn-details--xs {
-  min-height: 32px !important;
-  padding: 0 12px !important;
-  font-size: 12px !important;
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 12px;
   letter-spacing: 0.02em;
-  display: inline-flex !important;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.btn-details--block {
-  width: 100%;
 }
 .btn-details--block :deep(.v-btn__content) {
   display: flex;
@@ -238,7 +198,6 @@ export default {
   text-overflow: ellipsis;
 }
 
-/* ===== Мобильная адаптация ===== */
 @media (max-width: 599px) {
   .user-item__actions {
     display: none !important;
@@ -250,17 +209,23 @@ export default {
     grid-template-columns: 1fr 1fr;
     gap: 8px 16px;
   }
-
   .btn-details--block {
-    display: block;
+    display: inline-flex;
     width: 100%;
     max-width: 100%;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .btn-details--xs {
+    min-height: 32px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.02em;
+  }
 }
-
 @media (max-width: 360px) {
   .btn-details--xs {
     padding: 0 10px !important;
